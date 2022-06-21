@@ -1,0 +1,12 @@
+omdb_api.omdb_api_type.*:
+  type: config_entity
+  label: 'OMDB API type config'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    uuid:
+      type: string

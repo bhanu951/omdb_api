@@ -1,0 +1,10 @@
+entity.omdb_api.edit_form:
+  route_name: entity.omdb_api.edit_form
+  group: omdb_api
+  title: Edit
+
+entity.omdb_api.delete_form:
+  route_name: entity.omdb_api.delete_form
+  group: omdb_api
+  title: Delete
+  weight: 10

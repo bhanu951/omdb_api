@@ -1,0 +1,11 @@
+omdb_api.type_add:
+  title: 'Add omdb api type'
+  route_name: entity.omdb_api_type.add_form
+  appears_on:
+    - entity.omdb_api_type.collection
+
+omdb_api.add_page:
+  title: 'Add omdb api'
+  route_name: entity.omdb_api.add_page
+  appears_on:
+    - entity.omdb_api.collection

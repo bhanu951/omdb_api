@@ -1,0 +1,92 @@
+<?php
+
+/**
+ * @file
+ * Provides an omdb api entity type.
+ */
+
+use Drupal\Core\Render\Element;
+use Drupal\omdb_api\Entity\OmdbApi;
+use Drupal\user\UserInterface;
+
+/**
+ * Implements hook_theme().
+ */
+function omdb_api_theme() {
+  return [
+    'omdb_api' => [
+      'render element' => 'elements',
+    ],
+  ];
+}
+
+/**
+ * Prepares variables for omdb api templates.
+ *
+ * Default template: omdb-api.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An associative array containing the omdb api information and any
+ *     fields attached to the entity.
+ *   - attributes: HTML attributes for the containing element.
+ */
+function template_preprocess_omdb_api(array &$variables) {
+  $variables['view_mode'] = $variables['elements']['#view_mode'];
+  foreach (Element::children($variables['elements']) as $key) {
+    $variables['content'][$key] = $variables['elements'][$key];
+  }
+}
+
+/**
+ * Implements hook_user_cancel().
+ */
+function omdb_api_user_cancel($edit, UserInterface $account, $method) {
+  switch ($method) {
+    case 'user_cancel_block_unpublish':
+      // Unpublish omdb apis.
+      $storage = \Drupal::entityTypeManager()->getStorage('omdb_api');
+      $omdb_api_ids = $storage->getQuery()
+        ->condition('uid', $account->id())
+        ->condition('status', 1)
+        ->execute();
+      foreach ($storage->loadMultiple($omdb_api_ids) as $omdb_api) {
+        $omdb_api->set('status', FALSE);
+        $omdb_api->save();
+      }
+      break;
+
+    case 'user_cancel_reassign':
+      // Anonymize omdb apis.
+      $storage = \Drupal::entityTypeManager()->getStorage('omdb_api');
+      $omdb_api_ids = $storage->getQuery()
+        ->condition('uid', $account->id())
+        ->execute();
+      foreach ($storage->loadMultiple($omdb_api_ids) as $omdb_api) {
+        $omdb_api->setOwnerId(0);
+        $omdb_api->save();
+      }
+      break;
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_predelete() for user entities.
+ */
+function omdb_api_user_predelete(UserInterface $account) {
+  // Delete omdb apis.
+  $storage = \Drupal::entityTypeManager()->getStorage('omdb_api');
+  $omdb_api_ids = $storage->getQuery()
+    ->condition('uid', $account->id())
+    ->execute();
+  $omdb_apis = $storage->loadMultiple($omdb_api_ids);
+  $storage->delete($omdb_apis);
+  // Delete old revisions.
+  $omdb_api_ids = $storage->getQuery()
+    ->allRevisions()
+    ->condition('uid', $account->id())
+    ->execute();
+  foreach (array_keys($omdb_api_ids) as $revision_id) {
+    $storage->deleteRevision($revision_id);
+  }
+}

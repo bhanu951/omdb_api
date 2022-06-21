@@ -1,0 +1,5 @@
+entity.omdb_api_type.collection:
+  title: 'OMDB API types'
+  description: 'Manage and CRUD actions on OMDB API type.'
+  parent: system.admin_structure
+  route_name: entity.omdb_api_type.collection

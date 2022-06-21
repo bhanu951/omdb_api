@@ -20,3 +20,8 @@ revert all omdb api entities revisions:
   title: 'Revert all omdb api entities'
 delete all omdb api entities revisions:
   title: 'Delete all omdb api entities'
+
+administer omdb api types:
+  title: 'Administer omdb api types'
+  description: 'Maintain the types of omdb api entity.'
+  restrict access: true
