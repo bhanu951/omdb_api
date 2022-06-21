@@ -1,0 +1,21 @@
+{
+  "name": "drupal/omdb_api",
+  "type": "drupal-module",
+  "description": "Module for Integrating Drupal and OMDB API",
+  "keywords": [
+    "Drupal"
+  ],
+  "license": "GPL-2.0+",
+  "homepage": "https://www.drupal.org/project/omdb_api",
+  "authors": [
+    {
+      "name": "Bhanu",
+      "homepage": "https://www.drupal.org/u/bhanu951",
+      "role": "Maintainer"
+    }
+  ],
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/omdb_api",
+    "source": "http://cgit.drupalcode.org/omdb_api"
+  }
+}
