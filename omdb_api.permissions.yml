@@ -1,0 +1,22 @@
+administer omdb api configuration:
+  title: 'Administer OMDB API Configuration'
+  description: 'Permission for Administering OMDB API Configuration'
+  restrict access: true
+
+administer omdb api entities settings:
+  title: 'Administer omdb api settings'
+  restrict access: true
+delete omdb api entities:
+  title: 'Delete omdb api entities'
+create omdb api entities:
+  title: 'Create omdb api entities'
+view omdb api entities:
+  title: 'View omdb api entities'
+edit omdb api entities:
+  title: 'Edit omdb api entities'
+administer omdb api entities:
+  title: 'Administer omdb api entities'
+revert all omdb api entities revisions:
+  title: 'Revert all omdb api entities'
+delete all omdb api entities revisions:
+  title: 'Delete all omdb api entities'

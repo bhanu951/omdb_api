@@ -1,0 +1,67 @@
+body {
+  margin: 0;
+  padding: 20px;
+  font-family: sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.omdb-api-response-output-table {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.omdb-api-response-output-table td,
+.omdb-api-response-output-table th {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  text-align: left;
+  font-size: 16px;
+}
+
+.omdb-api-response-output-table th {
+  background-color: #1a93d3;
+  color: #ffffff;
+}
+
+.omdb-api-response-output-table tbody tr:nth-child(even) {
+  background-color: #d1e8f5;
+}
+
+
+/*responsive*/
+
+@media (max-width: 500px) {
+  .omdb-api-response-output-table thead {
+    display: none;
+  }
+
+  .omdb-api-response-output-table,
+  .omdb-api-response-output-table tbody,
+  .omdb-api-response-output-table tr,
+  .omdb-api-response-output-table td {
+    display: block;
+    width: 100%;
+  }
+  .omdb-api-response-output-table tr {
+    margin-bottom: 15px;
+  }
+  .omdb-api-response-output-table td {
+    padding-left: 50%;
+    text-align: left;
+    position: relative;
+  }
+  .omdb-api-response-output-table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0;
+    width: 50%;
+    padding-left: 15px;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: left;
+  }
+}

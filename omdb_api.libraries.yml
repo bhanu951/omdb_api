@@ -1,0 +1,11 @@
+# Custom module library for general purposes.
+response_data_table.styles:
+  version: 1.x
+  css:
+    theme:
+      libraries/css/response-data-table.css: {}
+  js:
+    libraries/js/response-data-table.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupalSettings

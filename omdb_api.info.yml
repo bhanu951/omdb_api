@@ -1,0 +1,17 @@
+name: OMDB API
+type: module
+description: Module for Integrating Drupal and OMDB API.
+package: Custom
+core_version_requirement: ^8.9 || ^9 || ^10
+dependencies:
+  - drupal:node
+  - drupal:views
+  - drupal:options
+  - drupal:taxonomy
+  - drupal:content_translation
+  - drupal:migrate_tools
+  - drupal:devel_generate
+  - drupal:path_alias
+  - drupal:block
+
+# version : 1.0

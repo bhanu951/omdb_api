@@ -1,0 +1,56 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the OMDB API module.
+ */
+
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\File\FileSystemInterface;
+
+/**
+ * Implements hook_install().
+ */
+function omdb_api_install() {
+
+  try {
+    $default_scheme = \Drupal::config('system.file')->get('default_scheme') ?? \Drupal::service('file_system')->getTempDirectory();
+    $destination = \Drupal::service('file_system')->realpath($default_scheme . "://omdb-api/qrcodes");
+    // Prepare directory for QR codes storing.
+    \Drupal::service('file_system')->prepareDirectory($destination, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
+  }
+  catch (\Exception $e) {
+    \Drupal::logger('omdb_api')->warning(sprintf('Unable to create directories, following error logged %s ', $e->getMessage()));
+  }
+}
+
+/**
+ * Implements hook_requirements().
+ */
+function omdb_api_requirements($phase) {
+
+  $requirements = [];
+  if ($phase == 'install') {
+    $default_scheme = \Drupal::config('system.file')->get('default_scheme')
+      ?? \Drupal::service('file_system')->getTempDirectory();
+    $destination = \Drupal::service('file_system')->realpath($default_scheme . "://omdb-api/qrcodes");
+    \Drupal::service('file_system')->prepareDirectory($destination, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
+    $is_writable = is_writable($destination);
+    $is_directory = is_dir($destination);
+    if (!$is_writable || !$is_directory) {
+      if (!$is_directory) {
+        $error = new TranslatableMarkup('The directory @directory does not exist.', ['@directory' => $destination]);
+      }
+      else {
+        $error = new TranslatableMarkup('The directory @directory is not writable.', ['@directory' => $destination]);
+      }
+      $description = new TranslatableMarkup('An automated attempt to create this directory failed, possibly due to a permissions problem. To proceed with the installation, either create the directory and modify its permissions manually or ensure that the installer has the permissions to create it automatically. For more information, see INSTALL.txt or the <a href=":handbook_url">online handbook</a>.', [':handbook_url' => 'https://www.drupal.org/server-permissions']);
+      if (!empty($error)) {
+        $description = $error . ' ' . $description;
+        $requirements['omdb_api']['description'] = $description;
+        $requirements['omdb_api']['severity'] = REQUIREMENT_ERROR;
+      }
+    }
+  }
+  return $requirements;
+}
