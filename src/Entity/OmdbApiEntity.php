@@ -9,6 +9,9 @@ use Drupal\Core\Entity\RevisionableContentEntityBase;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\user\EntityOwnerTrait;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Entity\RevisionableInterface;
+use Drupal\user\UserInterface;
+use Drupal\Core\Datetime\DrupalDateTime;
 
 /**
  * Defines the omdb api entity class.
@@ -79,12 +82,566 @@ class OmdbApiEntity extends RevisionableContentEntityBase implements OmdbApiEnti
   /**
    * {@inheritdoc}
    */
+  public static function preCreate(EntityStorageInterface $storage_controller, array &$values) {
+    parent::preCreate($storage_controller, $values);
+    $values += [
+      'uid' => \Drupal::currentUser()->id(),
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function urlRouteParameters($rel) {
+    $uri_route_parameters = parent::urlRouteParameters($rel);
+
+    if ($rel === 'revision_revert' && $this instanceof RevisionableInterface) {
+      $uri_route_parameters[$this->getEntityTypeId() . '_revision'] = $this->getRevisionId();
+    }
+    elseif ($rel === 'revision_delete' && $this instanceof RevisionableInterface) {
+      $uri_route_parameters[$this->getEntityTypeId() . '_revision'] = $this->getRevisionId();
+    }
+
+    return $uri_route_parameters;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function preSave(EntityStorageInterface $storage) {
     parent::preSave($storage);
-    if (!$this->getOwnerId()) {
+
+    foreach (array_keys($this->getTranslationLanguages()) as $langcode) {
+      $translation = $this->getTranslation($langcode);
+
       // If no owner has been set explicitly, make the anonymous user the owner.
-      $this->setOwnerId(0);
+      if (!$translation->getOwner()) {
+        $translation->setOwnerId(0);
+      }
     }
+
+    // If no revision author has been set explicitly,
+    // make the omdb api owner the revision author.
+    if (!$this->getRevisionUser()) {
+      $this->setRevisionUserId($this->getOwnerId());
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isRefreshData() {
+    return $this->get('refresh_data')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setRefreshData($refreshed = NULL): OmdbApiEntityInterface {
+    $this->set('refresh_data', $refreshed);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getImdbTitle(): string {
+    return $this->get('imdb_title')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setImdbTitle($imdb_title): OmdbApiEntityInterface {
+    $this->set('imdb_title', $imdb_title);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getImdbId(): string {
+    return $this->get('imdb_id')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setImdbId($timestamp): OmdbApiEntityInterface {
+    $this->set('imdb_id', $timestamp);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCreatedTime(): string {
+    return $this->get('created')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setCreatedTime($timestamp): OmdbApiEntityInterface {
+    $this->set('created', $timestamp);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getOwner() {
+    return $this->get('uid')->entity;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getOwnerId(): string {
+    return $this->get('uid')->target_id;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setOwnerId($uid): OmdbApiEntityInterface {
+    $this->set('uid', $uid);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setOwner(UserInterface $account): OmdbApiEntityInterface {
+    $this->set('uid', $account->id());
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isPublished() {
+    return (bool) $this->getEntityKey('status');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setPublished($published = NULL): OmdbApiEntityInterface {
+
+    if ($published == 'True') {
+      $published = TRUE;
+    }
+    else {
+      $published = FALSE;
+    }
+
+    $this->set('status', $published);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setUnpublished(): OmdbApiEntityInterface {
+    $this->set('status', FALSE);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getViewerRating(): string {
+    return $this->get('viewer_rating')->value ?? '';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setViewerRating($viewer_rating): OmdbApiEntityInterface {
+    $this->set('viewer_rating', $viewer_rating);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getReleasedYear(): string {
+    return $this->get('released_year')->value ?? '';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setReleasedYear($released_year): OmdbApiEntityInterface {
+    $this->set('released_year', $released_year);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getRuntime(): string {
+    return $this->get('runtime')->value ?? '';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setRuntime($released_year): OmdbApiEntityInterface {
+    $this->set('runtime', $released_year);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getGenre(): string {
+    return $this->get('genre')->value ?? '';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setGenre($genre): OmdbApiEntityInterface {
+    $this->set('genre', $genre);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getWriter(): string {
+    return $this->get('writer')->value ?? '';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setDirector($director): OmdbApiEntityInterface {
+    $this->set('director', $director);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getDirector(): string {
+    return $this->get('director')->value ?? '';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setWriter($writer): OmdbApiEntityInterface {
+    $this->set('writer', $writer);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getActors(): string {
+    return $this->get('actors')->value ?? '';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setActors($actors): OmdbApiEntityInterface {
+    $this->set('actors', $actors);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getPlot(): string {
+    return $this->get('plot')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setPlot($plot): OmdbApiEntityInterface {
+    $this->set('plot', $plot);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getLanguage(): string {
+    return $this->get('language')->value ?? '';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setLanguage($language): OmdbApiEntityInterface {
+    $this->set('language', $language);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCountry(): string {
+    return $this->get('country')->value ?? '';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setCountry($language): OmdbApiEntityInterface {
+    $this->set('country', $language);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getAwards(): string {
+    return $this->get('awards')->value ?? '';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setAwards($awards): OmdbApiEntityInterface {
+
+    if (is_array($awards)) {
+      $awards = json_encode($awards);
+    }
+    $this->set('awards', $awards);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getPoster(): string {
+    return $this->get('poster')->value ?? '';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setPoster($poster): OmdbApiEntityInterface {
+    $this->set('poster', $poster);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getRatings(): string {
+    return $this->get('ratings')->value ?? '';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setRatings($ratings): OmdbApiEntityInterface {
+
+    if (is_array($ratings)) {
+      $ratings = json_encode($ratings);
+    }
+    $this->set('ratings', $ratings);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getMetascore(): string {
+    return $this->get('metascore')->value ?? '';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setMetascore($metascore): OmdbApiEntityInterface {
+    $this->set('metascore', $metascore);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getimdbRating(): string {
+    return $this->get('imdb_rating')->value ?? '';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setimdbRating($imdb_rating): OmdbApiEntityInterface {
+    $this->set('imdb_rating', $imdb_rating);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getimdbVotes(): string {
+    return $this->get('imdb_votes')->value ?? '';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setimdbVotes($imdb_votes): OmdbApiEntityInterface {
+    $this->set('imdb_votes', $imdb_votes);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getDvdReleasedYear(): string {
+
+    $dvd_released_year = $this->get('dvd_released_year')->value;
+    if (($dvd_released_year != 'N/A') && isset($dvd_released_year)) {
+      $formatted_date = \Drupal::service('date.formatter')->format(
+        $dvd_released_year,
+        'custom',
+        'd M Y'
+      );
+      return $formatted_date;
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setDvdReleasedYear($dvd_released_year): OmdbApiEntityInterface {
+
+    if ($dvd_released_year != 'N/A') {
+      $new_datetime = DrupalDateTime::createFromFormat("d M Y", $dvd_released_year);
+      $timestamp = $new_datetime->format('U');
+      $this->set('dvd_released_year', $timestamp);
+      return $this;
+    }
+    else {
+      $this->set('dvd_released_year', NULL);
+      return $this;
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getBoxOfficeCollections(): string {
+    return $this->get('box_office_collections')->value ?? '';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setBoxOfficeCollections($box_office_collections): OmdbApiEntityInterface {
+    $this->set('box_office_collections', $box_office_collections);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getProductionHouse(): string {
+    return $this->get('box_office_collections')->value ?? '';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setProductionHouse($production): OmdbApiEntityInterface {
+    $this->set('production', $production);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getWebsite(): string {
+    return $this->get('website')->value ?? '';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setWebsite($website): OmdbApiEntityInterface {
+    $this->set('website', $website);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getApiResponseStatus(): string {
+    return $this->get('api_response')->value ?? '';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setApiResponseStatus($api_response): OmdbApiEntityInterface {
+    $this->set('api_response', $api_response);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getReleasedDate(): string {
+
+    $released_date = $this->get('released_date')->value;
+    if (($released_date != 'N/A') && isset($released_date)) {
+      $formatted_date = \Drupal::service('date.formatter')->format(
+        $released_date,
+        'custom',
+        'd M Y'
+      );
+      return $formatted_date;
+    }
+
+    return '';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setReleasedDate($released_date): OmdbApiEntityInterface {
+
+    if ($released_date != 'N/A') {
+      $new_datetime = DrupalDateTime::createFromFormat("d M Y", $released_date);
+      $timestamp = $new_datetime->format('U');
+      $this->set('released_date', $timestamp);
+      return $this;
+    }
+    else {
+      $this->set('released_date', NULL);
+      return $this;
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getRevisionCreationTime(): string {
+    return (string) $this->get('revision_timestamp')->value ?? '';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setRevisionCreationTime($revision_timestamp): OmdbApiEntityInterface {
+
+    if (!$revision_timestamp) {
+      $revision_timestamp = time();
+    }
+
+    $this->set('revision_timestamp', $revision_timestamp);
+    return $this;
   }
 
   /**
