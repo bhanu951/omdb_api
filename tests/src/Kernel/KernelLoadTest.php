@@ -64,4 +64,5 @@ class KernelLoadTest extends KernelTestBase {
 
     $this->assertTrue($module);
   }
+
 }

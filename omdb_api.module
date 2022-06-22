@@ -6,7 +6,6 @@
  */
 
 use Drupal\Core\Render\Element;
-use Drupal\omdb_api\Entity\OmdbApi;
 use Drupal\user\UserInterface;
 
 /**
@@ -89,4 +88,10 @@ function omdb_api_user_predelete(UserInterface $account) {
   foreach (array_keys($omdb_api_ids) as $revision_id) {
     $storage->deleteRevision($revision_id);
   }
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function omdb_api_entity_bundle_info_alter(array &$bundles): void {
 }

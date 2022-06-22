@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\omdb_api;
+namespace Drupal\omdb_api\Entity;
 
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Entity\EntityInterface;
@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Provides a list controller for the omdb api entity type.
  */
-class OmdbApiListBuilder extends EntityListBuilder {
+class OmdbApiEntityListBuilder extends EntityListBuilder {
 
   /**
    * The date formatter service.
@@ -22,7 +22,7 @@ class OmdbApiListBuilder extends EntityListBuilder {
   protected $dateFormatter;
 
   /**
-   * Constructs a new OmdbApiListBuilder object.
+   * Constructs a new OmdbApiEntityListBuilder object.
    *
    * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
    *   The entity type definition.
@@ -80,7 +80,7 @@ class OmdbApiListBuilder extends EntityListBuilder {
    * {@inheritdoc}
    */
   public function buildRow(EntityInterface $entity) {
-    /** @var \Drupal\omdb_api\OmdbApiInterface $entity */
+    /** @var \Drupal\omdb_api\Entity\OmdbApiEntityInterface $entity */
     $row['id'] = $entity->id();
     $row['label'] = $entity->toLink();
     $row['status'] = $entity->get('status')->value ? $this->t('Enabled') : $this->t('Disabled');

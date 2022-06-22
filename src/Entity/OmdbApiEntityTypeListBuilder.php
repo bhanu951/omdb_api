@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\omdb_api;
+namespace Drupal\omdb_api\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityListBuilder;
 use Drupal\Core\Entity\EntityInterface;
@@ -9,9 +9,9 @@ use Drupal\Core\Url;
 /**
  * Defines a class to build a listing of omdb api type entities.
  *
- * @see \Drupal\omdb_api\Entity\OmdbApiType
+ * @see \Drupal\omdb_api\Entity\OmdbApiEntityType
  */
-class OmdbApiTypeListBuilder extends ConfigEntityListBuilder {
+class OmdbApiEntityTypeListBuilder extends ConfigEntityListBuilder {
 
   /**
    * {@inheritdoc}

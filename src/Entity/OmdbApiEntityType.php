@@ -23,7 +23,7 @@ use Drupal\Core\Config\Entity\ConfigEntityBundleBase;
  *       "edit" = "Drupal\omdb_api\Form\OmdbApiTypeForm",
  *       "delete" = "Drupal\Core\Entity\EntityDeleteForm",
  *     },
- *     "list_builder" = "Drupal\omdb_api\OmdbApiTypeListBuilder",
+ *     "list_builder" = "Drupal\omdb_api\Entity\OmdbApiEntityTypeListBuilder",
  *     "route_provider" = {
  *       "html" = "Drupal\Core\Entity\Routing\AdminHtmlRouteProvider",
  *     }
@@ -49,7 +49,7 @@ use Drupal\Core\Config\Entity\ConfigEntityBundleBase;
  *   }
  * )
  */
-class OmdbApiType extends ConfigEntityBundleBase {
+class OmdbApiEntityType extends ConfigEntityBundleBase {
 
   /**
    * The machine name of this omdb api type.

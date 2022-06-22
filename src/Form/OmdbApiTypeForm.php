@@ -36,7 +36,7 @@ class OmdbApiTypeForm extends BundleEntityFormBase {
       '#default_value' => $entity_type->id(),
       '#maxlength' => EntityTypeInterface::BUNDLE_MAX_LENGTH,
       '#machine_name' => [
-        'exists' => ['Drupal\omdb_api\Entity\OmdbApiType', 'load'],
+        'exists' => ['Drupal\omdb_api\Entity\OmdbApiEntityType', 'load'],
         'source' => ['label'],
       ],
       '#description' => $this->t('A unique machine-readable name for this omdb api type. It must only contain lowercase letters, numbers, and underscores.'),
