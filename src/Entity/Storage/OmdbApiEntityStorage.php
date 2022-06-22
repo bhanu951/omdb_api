@@ -60,4 +60,5 @@ class OmdbApiEntityStorage extends SqlContentEntityStorage implements OmdbApiEnt
       ->condition('langcode', $language->getId())
       ->execute();
   }
+
 }

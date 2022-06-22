@@ -19,8 +19,8 @@ use Drupal\Core\Config\Entity\ConfigEntityBundleBase;
  *   ),
  *   handlers = {
  *     "form" = {
- *       "add" = "Drupal\omdb_api\Form\OmdbApiTypeForm",
- *       "edit" = "Drupal\omdb_api\Form\OmdbApiTypeForm",
+ *       "add" = "Drupal\omdb_api\Entity\Form\OmdbApiEntityTypeForm",
+ *       "edit" = "Drupal\omdb_api\Entity\Form\OmdbApiEntityTypeForm",
  *       "delete" = "Drupal\Core\Entity\EntityDeleteForm",
  *     },
  *     "list_builder" = "Drupal\omdb_api\Entity\OmdbApiEntityTypeListBuilder",

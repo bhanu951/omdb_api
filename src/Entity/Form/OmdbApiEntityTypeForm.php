@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\omdb_api\Form;
+namespace Drupal\omdb_api\Entity\Form;
 
 use Drupal\Core\Entity\BundleEntityFormBase;
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -9,7 +9,7 @@ use Drupal\Core\Form\FormStateInterface;
 /**
  * Form handler for omdb api type forms.
  */
-class OmdbApiTypeForm extends BundleEntityFormBase {
+class OmdbApiEntityTypeForm extends BundleEntityFormBase {
 
   /**
    * {@inheritdoc}

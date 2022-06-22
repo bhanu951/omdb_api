@@ -30,8 +30,8 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
  *     "list_builder" = "Drupal\omdb_api\Entity\OmdbApiEntityListBuilder",
  *     "views_data" = "Drupal\views\EntityViewsData",
  *     "form" = {
- *       "add" = "Drupal\omdb_api\Form\OmdbApiForm",
- *       "edit" = "Drupal\omdb_api\Form\OmdbApiForm",
+ *       "add" = "Drupal\omdb_api\Entity\Form\OmdbApiEntityForm",
+ *       "edit" = "Drupal\omdb_api\Entity\Form\OmdbApiEntityForm",
  *       "delete" = "Drupal\Core\Entity\ContentEntityDeleteForm",
  *     },
  *     "route_provider" = {
@@ -410,6 +410,7 @@ class OmdbApiEntity extends RevisionableContentEntityBase implements OmdbApiEnti
         'weight' => 25,
       ])
       ->setDisplayConfigurable('view', TRUE);
+
     $fields['imdb_rating'] = BaseFieldDefinition::create('string')
       ->setRevisionable(TRUE)
       ->setTranslatable(TRUE)

@@ -7,6 +7,7 @@
 
 use Drupal\Core\Render\Element;
 use Drupal\user\UserInterface;
+use Drupal\omdb_api\Entity\Bundle\Series;
 
 /**
  * Implements hook_theme().
@@ -26,8 +27,8 @@ function omdb_api_theme() {
  *
  * @param array $variables
  *   An associative array containing:
- *   - elements: An associative array containing the omdb api information and any
- *     fields attached to the entity.
+ *   - elements: An associative array containing the omdb api information and
+ *     any fields attached to the entity.
  *   - attributes: HTML attributes for the containing element.
  */
 function template_preprocess_omdb_api(array &$variables) {
@@ -94,4 +95,9 @@ function omdb_api_user_predelete(UserInterface $account) {
  * Implements hook_entity_bundle_info_alter().
  */
 function omdb_api_entity_bundle_info_alter(array &$bundles): void {
+
+  if (isset($bundles['omdb_api']['series'])) {
+    $bundles['omdb_api']['series']['class'] = Series::class;
+  }
+
 }

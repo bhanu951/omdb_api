@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\omdb_api\Form;
+namespace Drupal\omdb_api\Entity\Form;
 
 use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Form\FormStateInterface;
@@ -8,7 +8,7 @@ use Drupal\Core\Form\FormStateInterface;
 /**
  * Form controller for the omdb api entity edit forms.
  */
-class OmdbApiForm extends ContentEntityForm {
+class OmdbApiEntityForm extends ContentEntityForm {
 
   /**
    * {@inheritdoc}
