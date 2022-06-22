@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\omdb_api\Entity;
 
 use Drupal\Core\Entity\EntityChangedTrait;
@@ -167,8 +169,8 @@ class OmdbApiEntity extends RevisionableContentEntityBase implements OmdbApiEnti
   /**
    * {@inheritdoc}
    */
-  public function setImdbId($timestamp): OmdbApiEntityInterface {
-    $this->set('imdb_id', $timestamp);
+  public function setImdbId($imdb_id): OmdbApiEntityInterface {
+    $this->set('imdb_id', $imdb_id);
     return $this;
   }
 
@@ -190,15 +192,15 @@ class OmdbApiEntity extends RevisionableContentEntityBase implements OmdbApiEnti
   /**
    * {@inheritdoc}
    */
-  public function getOwner() {
-    return $this->get('uid')->entity;
+  public function getOwner(): int {
+    return (int) $this->get('uid')->entity;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getOwnerId(): string {
-    return $this->get('uid')->target_id;
+  public function getOwnerId(): int {
+    return (int) $this->get('uid')->target_id;
   }
 
   /**
@@ -220,7 +222,7 @@ class OmdbApiEntity extends RevisionableContentEntityBase implements OmdbApiEnti
   /**
    * {@inheritdoc}
    */
-  public function isPublished() {
+  public function isPublished(): bool {
     return (bool) $this->getEntityKey('status');
   }
 
