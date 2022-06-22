@@ -34,10 +34,12 @@ use Drupal\Core\Datetime\DrupalDateTime;
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
  *     "list_builder" = "Drupal\omdb_api\Entity\OmdbApiEntityListBuilder",
  *     "views_data" = "Drupal\views\EntityViewsData",
+ *     "translation" = "Drupal\omdb_api\Entity\OmdbApiEntityTranslationHandler",
  *     "form" = {
  *       "add" = "Drupal\omdb_api\Entity\Form\OmdbApiEntityForm",
  *       "edit" = "Drupal\omdb_api\Entity\Form\OmdbApiEntityForm",
- *       "delete" = "Drupal\Core\Entity\ContentEntityDeleteForm",
+ *       "delete" = "Drupal\omdb_api\Entity\Form\OmdbApiEntityDeleteForm",
+ *       "delete-multiple-confirm" = "Drupal\omdb_api\Entity\Form\OmdbApiEntityMultipleDeleteForm",
  *     },
  *     "route_provider" = {
  *       "html" = "Drupal\Core\Entity\Routing\AdminHtmlRouteProvider",
@@ -192,8 +194,8 @@ class OmdbApiEntity extends RevisionableContentEntityBase implements OmdbApiEnti
   /**
    * {@inheritdoc}
    */
-  public function getOwner(): int {
-    return (int) $this->get('uid')->entity;
+  public function getOwner() {
+    return $this->get('uid')->entity;
   }
 
   /**

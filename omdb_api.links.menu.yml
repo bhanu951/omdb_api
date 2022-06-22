@@ -1,5 +1,13 @@
+# List of OMDB API Entity Content.
+# entity.omdb_api.collection:
+#   title: 'OMDB APIs'
+#   description: 'List of OMDB API Entities.'
+#   route_name: entity.omdb_api.collection
+#   parent: entity.omdb_api.base
+
+# List of OMDB API Entity Type Content.
 entity.omdb_api_type.collection:
-  title: 'OMDB API types'
-  description: 'Manage and CRUD actions on OMDB API type.'
+  title: 'OMDB API Entity Types'
+  description: 'Manages OMDB API Entity Types.'
   parent: system.admin_structure
   route_name: entity.omdb_api_type.collection
