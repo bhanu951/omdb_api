@@ -32,7 +32,7 @@ use Drupal\Core\Datetime\DrupalDateTime;
  *   handlers = {
  *     "storage" = "Drupal\omdb_api\Entity\Storage\OmdbApiEntityStorage",
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
- *     "list_builder" = "Drupal\omdb_api\Entity\OmdbApiEntityListBuilder",
+ *     "list_builder" = "Drupal\omdb_api\Entity\ListBuilder\OmdbApiEntityListBuilder",
  *     "views_data" = "Drupal\views\EntityViewsData",
  *     "translation" = "Drupal\omdb_api\Entity\OmdbApiEntityTranslationHandler",
  *     "form" = {
@@ -42,7 +42,7 @@ use Drupal\Core\Datetime\DrupalDateTime;
  *       "delete-multiple-confirm" = "Drupal\omdb_api\Entity\Form\OmdbApiEntityMultipleDeleteForm",
  *     },
  *     "route_provider" = {
- *       "html" = "Drupal\Core\Entity\Routing\AdminHtmlRouteProvider",
+ *       "html" = "Drupal\omdb_api\Entity\Routing\OmdbApiEntityHtmlRouteProvider",
  *     }
  *   },
  *   base_table = "omdb_api",
