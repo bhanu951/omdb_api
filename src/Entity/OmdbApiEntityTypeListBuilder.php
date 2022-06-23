@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\omdb_api\Entity\ListBuilder;
+namespace Drupal\omdb_api\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityListBuilder;
 use Drupal\Core\Entity\EntityInterface;

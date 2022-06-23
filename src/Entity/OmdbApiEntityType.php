@@ -23,7 +23,7 @@ use Drupal\Core\Config\Entity\ConfigEntityBundleBase;
  *       "edit" = "Drupal\omdb_api\Entity\Form\OmdbApiEntityTypeForm",
  *       "delete" = "Drupal\Core\Entity\EntityDeleteForm",
  *     },
- *     "list_builder" = "Drupal\omdb_api\Entity\ListBuilder\OmdbApiEntityTypeListBuilder",
+ *     "list_builder" = "Drupal\omdb_api\Entity\OmdbApiEntityTypeListBuilder",
  *     "route_provider" = {
  *       "html" = "Drupal\Core\Entity\Routing\AdminHtmlRouteProvider",
  *     }
