@@ -24,3 +24,8 @@ entity.omdb_api_type.collection:
   title: 'List'
   route_name: entity.omdb_api_type.collection
   base_route: entity.omdb_api_type.collection
+
+entity.omdb_api.version_history:
+  route_name: entity.omdb_api.version_history
+  base_route: entity.omdb_api.canonical
+  title: 'Revisions'

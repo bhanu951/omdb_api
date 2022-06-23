@@ -42,7 +42,7 @@ use Drupal\Core\Datetime\DrupalDateTime;
  *       "delete-multiple-confirm" = "Drupal\omdb_api\Entity\Form\OmdbApiEntityMultipleDeleteForm",
  *     },
  *     "route_provider" = {
- *       "html" = "Drupal\Core\Entity\Routing\AdminHtmlRouteProvider",
+ *       "html" = "Drupal\omdb_api\Entity\Routing\OmdbApiEntityHtmlRouteProvider",
  *     }
  *   },
  *   base_table = "omdb_api",
@@ -73,6 +73,12 @@ use Drupal\Core\Datetime\DrupalDateTime;
  *     "canonical" = "/omdb-api/{omdb_api}",
  *     "edit-form" = "/omdb-api/{omdb_api}/edit",
  *     "delete-form" = "/omdb-api/{omdb_api}/delete",
+ *     "delete-multiple-form" = "/content/omdb-api/delete",
+ *     "version-history" = "/content/omdb-api/{omdb_api}/revisions",
+ *     "revision" = "/content/omdb-api/{omdb_api}/revisions/{omdb_api_revision}/view",
+ *     "revision_revert" = "/content/omdb-api/{omdb_api}/revisions/{omdb_api_revision}/revert",
+ *     "revision_delete" = "/content/omdb-api/{omdb_api}/revisions/{omdb_api_revision}/delete",
+ *     "revision_revert_translation" = "/content/omdb-api/{omdb_api}/revisions/{omdb_api_revision}/revert/{langcode}",
  *   },
  *   bundle_entity_type = "omdb_api_type",
  *   field_ui_base_route = "entity.omdb_api_type.edit_form",

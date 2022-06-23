@@ -1,4 +1,5 @@
+services:
   # OMDB API Logger Service.
   omdb_api.entity_logger_service:
     class: Drupal\omdb_api\Entity\Logger\OmdbApiEntityLogger
-    arguments: ['@config.factory', '@logger.factory', '@logger.log_message_parser', '@date.formatter',  '@current_user','@file_system','@request_stack', '@uuid', '@datetime.time']
+    arguments: ['@config.factory', '@logger.factory', '@logger.log_message_parser', '@date.formatter', '@current_user','@file_system','@request_stack', '@uuid', '@datetime.time']
