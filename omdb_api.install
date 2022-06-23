@@ -17,7 +17,7 @@ function omdb_api_install() {
     $default_scheme = \Drupal::config('system.file')->get('default_scheme') ?? \Drupal::service('file_system')->getTempDirectory();
     $destination = \Drupal::service('file_system')->realpath($default_scheme . "://omdb-api/qrcodes");
     // Prepare directory for QR codes storing.
-    \Drupal::service('file_system')->prepareDirectory($destination, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
+    \Drupal::service('file_system')->prepareDirectory($destination, FileSystemInterface::CREATE_DIRECTORY || FileSystemInterface::MODIFY_PERMISSIONS);
   }
   catch (\Exception $e) {
     \Drupal::logger('omdb_api')->warning(sprintf('Unable to create directories, following error logged %s ', $e->getMessage()));
@@ -34,7 +34,7 @@ function omdb_api_requirements($phase) {
     $default_scheme = \Drupal::config('system.file')->get('default_scheme')
       ?? \Drupal::service('file_system')->getTempDirectory();
     $destination = \Drupal::service('file_system')->realpath($default_scheme . "://omdb-api/qrcodes");
-    \Drupal::service('file_system')->prepareDirectory($destination, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
+    \Drupal::service('file_system')->prepareDirectory($destination, FileSystemInterface::CREATE_DIRECTORY || FileSystemInterface::MODIFY_PERMISSIONS);
     $is_writable = is_writable($destination);
     $is_directory = is_dir($destination);
     if (!$is_writable || !$is_directory) {

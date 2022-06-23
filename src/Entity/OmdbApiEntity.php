@@ -35,6 +35,7 @@ use Drupal\Core\Datetime\DrupalDateTime;
  *     "list_builder" = "Drupal\omdb_api\Entity\OmdbApiEntityListBuilder",
  *     "views_data" = "Drupal\views\EntityViewsData",
  *     "translation" = "Drupal\omdb_api\Entity\OmdbApiEntityTranslationHandler",
+ *     "access" = "Drupal\omdb_api\Entity\Access\OmdbApiEntityAccessControlHandler",
  *     "form" = {
  *       "add" = "Drupal\omdb_api\Entity\Form\OmdbApiEntityForm",
  *       "edit" = "Drupal\omdb_api\Entity\Form\OmdbApiEntityForm",
@@ -67,7 +68,7 @@ use Drupal\Core\Datetime\DrupalDateTime;
  *     "revision_log_message" = "revision_log",
  *   },
  *   links = {
- *     "collection" = "/admin/content/omdb-api",
+ *     "collection" = "/admin/content/omdb-api/list",
  *     "add-form" = "/omdb-api/add/{omdb_api_type}",
  *     "add-page" = "/omdb-api/add",
  *     "canonical" = "/omdb-api/{omdb_api}",
@@ -703,6 +704,7 @@ class OmdbApiEntity extends RevisionableContentEntityBase implements OmdbApiEnti
       ->setTranslatable(TRUE)
       ->setLabel(new TranslatableMarkup('IMDB Id'))
       ->setDescription(new TranslatableMarkup('The IMDB Id of the Movie or Series.'))
+      ->setDefaultValue('0')
       ->setDisplayOptions('form', [
         'type' => 'string_textfield',
         'weight' => -4,
@@ -1175,6 +1177,17 @@ class OmdbApiEntity extends RevisionableContentEntityBase implements OmdbApiEnti
       ])
       ->setDisplayConfigurable('form', TRUE)
       ->setComputed(TRUE);
+
+    $fields['revision_translation_affected'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Revision translation affected'))
+      ->setDescription(t('Indicates if the last edit of a translation belongs to current revision.'))
+      ->setReadOnly(TRUE)
+      ->setRevisionable(TRUE)
+      ->setTranslatable(TRUE)
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'weight' => 41,
+      ]);
 
     return $fields;
   }

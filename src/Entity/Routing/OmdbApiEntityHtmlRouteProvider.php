@@ -43,22 +43,18 @@ class OmdbApiEntityHtmlRouteProvider extends AdminHtmlRouteProvider {
       $collection->add("entity.{$entity_type_id}.revision_revert_translation", $translation_route);
     }
 
-    // if ($export_route = $this->getEntityExportRoute($entity_type)) {
+    // If ($export_route = $this->getEntityExportRoute($entity_type)) {
     //   $collection->add("entity.{$entity_type_id}.export", $export_route);
-    // }
-
-    // if ($settings_form_route = $this->getCredentialsSettingsFormRoute($entity_type)) {
+    // }.
+    // If ($settings_form_route = $this->getCredentialsSettingsFormRoute($entity_type)) {
     //   $collection->add("entity.{$entity_type_id}_credentials.settings_form", $settings_form_route);
-    // }
-
-    // if ($logger_settings_form_route = $this->getOmdbApiLoggerSettingsFormRoute($entity_type)) {
+    // }.
+    // If ($logger_settings_form_route = $this->getOmdbApiLoggerSettingsFormRoute($entity_type)) {
     //   $collection->add("entity.{$entity_type_id}_logger.settings_form", $logger_settings_form_route);
-    // }
-
-    // if ($logger_settings_form_route = $this->getOmdbApiLogViewControllerRoute($entity_type)) {
+    // }.
+    // If ($logger_settings_form_route = $this->getOmdbApiLogViewControllerRoute($entity_type)) {
     //   $collection->add("entity.{$entity_type_id}.log_view", $logger_settings_form_route);
-    // }
-
+    // }.
     return $collection;
 
   }
