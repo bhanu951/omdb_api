@@ -704,7 +704,6 @@ class OmdbApiEntity extends RevisionableContentEntityBase implements OmdbApiEnti
       ->setTranslatable(TRUE)
       ->setLabel(new TranslatableMarkup('IMDB Id'))
       ->setDescription(new TranslatableMarkup('The IMDB Id of the Movie or Series.'))
-      ->setDefaultValue('0')
       ->setDisplayOptions('form', [
         'type' => 'string_textfield',
         'weight' => -4,

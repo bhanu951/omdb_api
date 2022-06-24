@@ -8,3 +8,13 @@ entity.omdb_api.delete_form:
   group: omdb_api
   title: Delete
   weight: 10
+
+# omdb_api.contextual_links:
+#   deriver: 'Drupal\omdb_api\Plugin\Derivative\OmdbApiContextualLinks'
+#   title: 'All OMDB API Entities Contextual Links'
+#   options:
+#     attributes:
+#       class: ['use-ajax']
+#       data-dialog-type: dialog
+#       data-dialog-renderer: off_canvas
+#       data-settings-tray-edit: true
