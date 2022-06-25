@@ -22,6 +22,13 @@ class OmdbApiContextualLinks extends DeriverBase implements ContainerDeriverInte
   protected $entityTypeManager;
 
   /**
+   * The omdb api entity storage manager.
+   *
+   * @var \Drupal\omdb_api\Entity\Storage\OmdbApiEntityStorageInterface
+   */
+  protected $omdbApiEntityStorage;
+
+  /**
    * Construct OMDB API Entity Contextual Links.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager

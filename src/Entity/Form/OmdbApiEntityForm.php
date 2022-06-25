@@ -20,15 +20,14 @@ class OmdbApiEntityForm extends ContentEntityForm {
     /** @var \Drupal\omdb_api\Entity\Storage\OmdbApiEntityStorageInterface $entity */
     $entity = $this->getEntity();
 
-    // if (!$entity->isNew()) {
+    // If (!$entity->isNew()) {
     //   $form['new_revision'] = [
     //     '#type' => 'checkbox',
     //     '#title' => $this->t('Create new revision'),
     //     '#default_value' => FALSE,
     //     '#weight' => 10,
     //   ];
-    // }
-
+    // }.
     return $form;
   }
 

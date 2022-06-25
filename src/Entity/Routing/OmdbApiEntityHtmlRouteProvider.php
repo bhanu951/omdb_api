@@ -3,16 +3,17 @@
 namespace Drupal\omdb_api\Entity\Routing;
 
 use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Entity\Routing\AdminHtmlRouteProvider;
 use Symfony\Component\Routing\Route;
+use Drupal\Core\Entity\Routing\DefaultHtmlRouteProvider;
 
 /**
  * Provides routes for Omdb API Entities.
  *
  * @see Drupal\Core\Entity\Routing\AdminHtmlRouteProvider
  * @see Drupal\Core\Entity\Routing\DefaultHtmlRouteProvider
+ * @see https://www.drupal.org/files/issues/2596095-27.patch
  */
-class OmdbApiEntityHtmlRouteProvider extends AdminHtmlRouteProvider {
+class OmdbApiEntityHtmlRouteProvider extends DefaultHtmlRouteProvider {
 
   /**
    * {@inheritdoc}
@@ -57,6 +58,28 @@ class OmdbApiEntityHtmlRouteProvider extends AdminHtmlRouteProvider {
     // }.
     return $collection;
 
+  }
+
+  /**
+   * Gets the add route.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
+   *   The entity type.
+   *
+   * @return \Symfony\Component\Routing\Route|null
+   *   The generated route, if available.
+   */
+  protected function getAddRoute(EntityTypeInterface $entity_type) {
+    if ($entity_type->hasLinkTemplate('add-form') && $entity_type->getFormClass('add')) {
+      $entity_type_id = $entity_type->id();
+      $route = new Route($entity_type->getLinkTemplate('add-form'));
+      $route
+        ->setDefault('_entity_form', "{$entity_type_id}.add")
+        ->setDefault('_title', 'Add OMDB API')
+        ->setRequirement('_entity_create_access', $entity_type_id)
+        ->setOption('_admin_route', TRUE);
+      return $route;
+    }
   }
 
   /**
