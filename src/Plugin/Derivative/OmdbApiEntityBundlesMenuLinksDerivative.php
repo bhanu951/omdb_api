@@ -62,7 +62,7 @@ class OmdbApiEntityBundlesMenuLinksDerivative extends DeriverBase implements Con
   public function getDerivativeDefinitions($base_plugin_definition) {
 
     // Get OMDB API Entity Bundle Information.
-    $bundles = $this->entityTypeBundleInfo->getBundleInfo('omdb_api');
+    $bundles = $this->entityTypeBundleInfo->getBundleInfo('omdb_api') ?? [];
 
     foreach ($bundles as $key => $bundle) {
       $this->derivatives[$key] = $base_plugin_definition;
@@ -70,7 +70,8 @@ class OmdbApiEntityBundlesMenuLinksDerivative extends DeriverBase implements Con
       $this->derivatives[$key]['route_parameters'] = ['omdb_api_type' => $key];
       $this->derivatives[$key]['parent'] = 'entity.omdb_api.collection';
       $this->derivatives[$key]['title'] = ucfirst($bundle['label']);
-      $this->derivatives[$key]['admin_label'] = $this->t('Adds : @type', ['@type' => ucfirst($bundle['label'])]);
+      // @todo Check why description is not rendering on lising page.
+      $this->derivatives[$key]['description'] = $this->t('Adds : @type OMDB API Entity', ['@type' => ucfirst($bundle['label'])]);
     }
 
     return parent::getDerivativeDefinitions($base_plugin_definition);

@@ -12,12 +12,6 @@ entity.omdb_api_type.collection:
   parent: system.admin_structure
   route_name: entity.omdb_api_type.collection
 
-# entity.omdb_api.add_movies:
-#   title: 'OMDB APIs Type'
-#   description: 'List of OMDB API Entities.'
-#   route_name: entity.omdb_api_type.collection
-#   parent: entity.omdb_api.collection
-
 # OMDB API Entity Bundle Types Menu Links.
 entity.omdb_api.add_content:
   # parent: entity.omdb_api.collection
