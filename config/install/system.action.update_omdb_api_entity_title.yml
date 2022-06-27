@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - omdb_api
+id: update_omdb_api_entity_title
+label: 'Update OMDB API Entity Title'
+type: omdb_api
+plugin: update_omdb_api_entity_title
+configuration: {  }

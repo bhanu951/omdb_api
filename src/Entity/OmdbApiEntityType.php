@@ -5,12 +5,12 @@ namespace Drupal\omdb_api\Entity;
 use Drupal\Core\Config\Entity\ConfigEntityBundleBase;
 
 /**
- * Defines the OMDB API type configuration entity.
+ * Defines the OMDB API Type configuration entity.
  *
  * @ConfigEntityType(
  *   id = "omdb_api_type",
- *   label = @Translation("OMDB API type"),
- *   label_collection = @Translation("OMDB API types"),
+ *   label = @Translation("OMDB API Type"),
+ *   label_collection = @Translation("OMDB API Types"),
  *   label_singular = @Translation("omdb api type"),
  *   label_plural = @Translation("omdb apis types"),
  *   label_count = @PluralTranslation(

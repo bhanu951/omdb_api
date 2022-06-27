@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - omdb_api
+id: refresh_omdb_api_data
+label: 'Refresh OMDB API Entity Data'
+type: omdb_api
+plugin: refresh_omdb_api_data
+configuration: {  }

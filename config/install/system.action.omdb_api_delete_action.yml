@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - omdb_api
+id: omdb_api_delete_action
+label: 'Delete OMDB API Entity'
+type: omdb_api
+plugin: entity:delete_action:omdb_api
+configuration: {  }

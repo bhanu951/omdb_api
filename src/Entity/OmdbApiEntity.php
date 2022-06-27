@@ -32,8 +32,8 @@ use Drupal\Core\Datetime\DrupalDateTime;
  *   handlers = {
  *     "storage" = "Drupal\omdb_api\Entity\Storage\OmdbApiEntityStorage",
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
- *     "list_builder" = "Drupal\omdb_api\Entity\OmdbApiEntityListBuilder",
- *     "views_data" = "Drupal\views\EntityViewsData",
+ *     "list_builder" = "Drupal\omdb_api\Entity\ListBuilder\OmdbApiEntityListBuilder",
+ *     "views_data" = "Drupal\omdb_api\Entity\OmdbApiEntityViewsData",
  *     "translation" = "Drupal\omdb_api\Entity\OmdbApiEntityTranslationHandler",
  *     "access" = "Drupal\omdb_api\Entity\Access\OmdbApiEntityAccessControlHandler",
  *     "form" = {

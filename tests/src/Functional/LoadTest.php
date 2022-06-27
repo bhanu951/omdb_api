@@ -60,6 +60,23 @@ class LoadTest extends BrowserTestBase {
   }
 
   /**
+   * Tests the OMDB API Entity Structure Page.
+   */
+  public function testOmdbApiEntityStructurePage() {
+
+    $omdb_api_entity_content_types = $this->drupalCreateUser([
+      'administer omdb api types',
+    ]);
+    $this->drupalLogin($omdb_api_entity_content_types);
+    // Visit the OMDB API Type Page.
+    $this->drupalGet('/admin/structure/omdb_api_types');
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->pageTextContains('OMDB API Type');
+    $this->assertSession()->pageTextNotContains('No omdb api types available.');
+
+  }
+
+  /**
    * Tests the OMDB API module unistall.
    */
   public function testModuleUninstall() {
@@ -83,37 +100,38 @@ class LoadTest extends BrowserTestBase {
     // Visit the frontpage.
     $this->drupalGet('');
     $this->assertSession()->statusCodeEquals(200);
+
   }
 
   /**
    * Tests the OMDB API module reinstalling after being uninstalled.
    */
-  public function testReinstallAfterUninstall() {
+  // public function testReinstallAfterUninstall() {
 
-    $admin_user = $this->drupalCreateUser([
-      'access administration pages',
-      'administer site configuration',
-      'administer modules',
-    ]);
+  //   $admin_user = $this->drupalCreateUser([
+  //     'access administration pages',
+  //     'administer site configuration',
+  //     'administer modules',
+  //   ]);
 
-    $drupalFinder = new DrupalFinder();
-    $drupalFinder->locateRoot(getcwd());
-    $drupalRoot = $_ENV['DRUPAL_ROOT'] ?? $drupalFinder->getDrupalRoot();
+  //   $drupalFinder = new DrupalFinder();
+  //   $drupalFinder->locateRoot(getcwd());
+  //   $drupalRoot = $_ENV['DRUPAL_ROOT'] ?? $drupalFinder->getDrupalRoot();
 
-    // Uninstall the module.
-    $this->drupalLogin($admin_user);
-    $this->assertDirectoryExists($drupalRoot . '/sites/default/files/public/omdb-api/qrcodes');
-    $assert_session = $this->assertSession();
-    $page = $this->getSession()->getPage();
+  //   // Uninstall the module.
+  //   $this->drupalLogin($admin_user);
+  //   $this->assertDirectoryExists($drupalRoot . '/sites/default/files/public/omdb-api/qrcodes');
+  //   $assert_session = $this->assertSession();
+  //   $page = $this->getSession()->getPage();
 
-    // Uninstall the OMDB API module.
-    $this->container->get('module_installer')->uninstall(['omdb_api'], FALSE);
+  //   // Uninstall the OMDB API module.
+  //   $this->container->get('module_installer')->uninstall(['omdb_api'], FALSE);
 
-    $this->drupalGet('/admin/modules');
-    $page->checkField('modules[omdb_api][enable]');
-    $page->pressButton('Install');
-    $assert_session->pageTextNotContains('Unable to install OMDB API');
-    $assert_session->pageTextContains('Module OMDB API has been enabled');
-  }
+  //   $this->drupalGet('/admin/modules');
+  //   $page->checkField('modules[omdb_api][enable]');
+  //   $page->pressButton('Install');
+  //   $assert_session->pageTextNotContains('Unable to install OMDB API');
+  //   $assert_session->pageTextContains('Module OMDB API has been enabled');
+  // }
 
 }

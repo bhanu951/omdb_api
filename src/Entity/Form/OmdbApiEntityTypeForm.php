@@ -59,6 +59,8 @@ class OmdbApiEntityTypeForm extends BundleEntityFormBase {
    * {@inheritdoc}
    */
   public function save(array $form, FormStateInterface $form_state) {
+
+    /** @var Drupal\Core\Entity\EntityTypeInterface $entity_type */
     $entity_type = $this->entity;
 
     $entity_type->set('id', trim($entity_type->id()));
