@@ -6,7 +6,6 @@ use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Component\Datetime\TimeInterface;
 
 /**
  * Form controller for the omdb api entity edit forms.

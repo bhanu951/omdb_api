@@ -106,32 +106,26 @@ class LoadTest extends BrowserTestBase {
   /**
    * Tests the OMDB API module reinstalling after being uninstalled.
    */
-  // public function testReinstallAfterUninstall() {
-
-  //   $admin_user = $this->drupalCreateUser([
+  // Public function testReinstallAfterUninstall() {
+  // $admin_user = $this->drupalCreateUser([
   //     'access administration pages',
   //     'administer site configuration',
   //     'administer modules',
   //   ]);
-
-  //   $drupalFinder = new DrupalFinder();
+  // $drupalFinder = new DrupalFinder();
   //   $drupalFinder->locateRoot(getcwd());
   //   $drupalRoot = $_ENV['DRUPAL_ROOT'] ?? $drupalFinder->getDrupalRoot();
-
-  //   // Uninstall the module.
+  // // Uninstall the module.
   //   $this->drupalLogin($admin_user);
   //   $this->assertDirectoryExists($drupalRoot . '/sites/default/files/public/omdb-api/qrcodes');
   //   $assert_session = $this->assertSession();
   //   $page = $this->getSession()->getPage();
-
-  //   // Uninstall the OMDB API module.
+  // // Uninstall the OMDB API module.
   //   $this->container->get('module_installer')->uninstall(['omdb_api'], FALSE);
-
-  //   $this->drupalGet('/admin/modules');
+  // $this->drupalGet('/admin/modules');
   //   $page->checkField('modules[omdb_api][enable]');
   //   $page->pressButton('Install');
   //   $assert_session->pageTextNotContains('Unable to install OMDB API');
   //   $assert_session->pageTextContains('Module OMDB API has been enabled');
-  // }
-
+  // }.
 }

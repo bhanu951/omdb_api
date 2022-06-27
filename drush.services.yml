@@ -1,0 +1,6 @@
+services:
+  omdb_api.devel_generate_commands:
+    class: \Drupal\omdb_api\Commands\OmdbApiEntityDevelGenerateCommands
+    arguments: ['@plugin.manager.develgenerate']
+    tags:
+      -  { name: drush.command }

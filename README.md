@@ -73,12 +73,12 @@ This Module provides migration plugin to import data from CSV source.
 ## TODO :
 
 1. Add workflow image can use https://bpmn.io/ for creating workflow image.
-2. Add Bulk Operations Form.
+2. Add Bulk Operations Form.  --> Done
 3. Update Entity List View.
 4. Add Tests.
 5. Add Devel Generate.
 6. Add Devel Generate Drush Command.
-7. Add Action Plugins.
+7. Add Action Plugins.  --> Done
 
 ## Notes :
 
