@@ -15,6 +15,7 @@ use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Database\Database;
+use Drupal\omdb_api\Entity\Exception\OmdbApiEntityException;
 
 // http://grep.xnddx.ru/node/30960912
 /**
@@ -304,12 +305,12 @@ class OmdbApiEntityLogger implements OmdbApiEntityLoggerInterface {
       $query->execute();
 
     }
-    catch (\Exception $e) {
+    catch (OmdbApiEntityException $e) {
 
       $this->logger->error('SQLite Database configurtion is not setup. Error occurred establishing connection : %error', [
         '%error' => $e->getMessage(),
       ]);
-      return new \Exception("SQLite Database configurtion is not setup.", 1);
+      return new OmdbApiEntityException("SQLite Database configurtion is not setup.", 1);
 
     }
   }

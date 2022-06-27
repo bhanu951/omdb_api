@@ -7,6 +7,7 @@
 
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\File\FileSystemInterface;
+use Drupal\omdb_api\Entity\Exception\OmdbApiEntityException;
 
 /**
  * Implements hook_install().
@@ -16,12 +17,11 @@ function omdb_api_install() {
   try {
     $default_scheme = \Drupal::config('system.file')->get('default_scheme') ?? \Drupal::service('file_system')->getTempDirectory();
     $destination = \Drupal::service('file_system')->realpath($default_scheme . "://omdb-api/qrcodes");
+
     // Prepare directory for QR codes storing.
-    if (!\Drupal::service('file_system')->prepareDirectory($destination, FileSystemInterface::CREATE_DIRECTORY || FileSystemInterface::MODIFY_PERMISSIONS)) {
-      mkdir($destination, 0777, TRUE);
-    }
+    \Drupal::service('file_system')->prepareDirectory($destination, FileSystemInterface::CREATE_DIRECTORY || FileSystemInterface::MODIFY_PERMISSIONS);
   }
-  catch (\Exception $e) {
+  catch (OmdbApiEntityException $e) {
     \Drupal::logger('omdb_api')->warning(sprintf('Unable to create directories, following error logged %s ', $e->getMessage()));
   }
 }

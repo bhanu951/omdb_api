@@ -4,11 +4,48 @@ namespace Drupal\omdb_api\Entity\Form;
 
 use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Component\Datetime\TimeInterface;
 
 /**
  * Form controller for the omdb api entity edit forms.
  */
-class OmdbApiEntityForm extends ContentEntityForm {
+class OmdbApiEntityForm extends ContentEntityForm implements ContainerInjectionInterface {
+
+  /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * The current user.
+   *
+   * @var \Drupal\Core\Session\AccountInterface
+   */
+  protected $currentUser;
+
+  /**
+   * The time system.
+   *
+   * @var \Drupal\Component\Datetime\TimeInterface
+   */
+  protected $time;
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+
+    $instance = parent::create($container);
+    $instance->entityTypeManager = $container->get('entity_type.manager');
+    $instance->currentUser = $container->get('current_user');
+    $instance->time = $container->get('datetime.time');
+    return $instance;
+
+  }
 
   /**
    * {@inheritdoc}
@@ -17,17 +54,6 @@ class OmdbApiEntityForm extends ContentEntityForm {
 
     $form = parent::buildForm($form, $form_state);
 
-    /** @var \Drupal\omdb_api\Entity\Storage\OmdbApiEntityStorageInterface $entity */
-    $entity = $this->getEntity();
-
-    // If (!$entity->isNew()) {
-    //   $form['new_revision'] = [
-    //     '#type' => 'checkbox',
-    //     '#title' => $this->t('Create new revision'),
-    //     '#default_value' => FALSE,
-    //     '#weight' => 10,
-    //   ];
-    // }.
     return $form;
   }
 
@@ -41,8 +67,8 @@ class OmdbApiEntityForm extends ContentEntityForm {
     // Save as a new revision if requested to do so.
     if (!$form_state->isValueEmpty('new_revision') && $form_state->getValue('new_revision') != FALSE) {
 
-      $request_time = \Drupal::time()->getCurrentTime();
-      $current_user = \Drupal::currentUser()->id();
+      $request_time = $this->time->getCurrentTime();
+      $current_user = $this->currentUser->id();
       $entity->setNewRevision();
       $entity->isDefaultRevision(TRUE);
       // If a new revision is created, save the current user as revision author.

@@ -43,7 +43,7 @@ use Drupal\Core\Datetime\DrupalDateTime;
  *       "delete-multiple-confirm" = "Drupal\omdb_api\Entity\Form\OmdbApiEntityMultipleDeleteForm",
  *     },
  *     "route_provider" = {
- *       "html" = "Drupal\omdb_api\Entity\Routing\OmdbApiEntityHtmlRouteProvider","Drupal\Core\Entity\Routing\DefaultHtmlRouteProvider",
+ *       "html" = "Drupal\omdb_api\Entity\Routing\OmdbApiEntityHtmlRouteProvider",
  *     }
  *   },
  *   base_table = "omdb_api",

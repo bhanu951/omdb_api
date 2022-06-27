@@ -5,6 +5,7 @@ namespace Drupal\omdb_api\Plugin\Validation\Constraint;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Drupal\omdb_api\Entity\OmdbApiEntityInterface;
+use Drupal\omdb_api\Entity\Exception\OmdbApiEntityException;
 
 /**
  * Validates the Omdb Api Imdb Id constraint.
@@ -27,7 +28,7 @@ class OmdbApiImdbIdConstraintValidator extends ConstraintValidator {
 
     if ($items->getFieldDefinition()->getName() !== 'imdb_id' || $entity_type_id !== 'omdb_api') {
       // The constraint has been set on wrong field.
-      throw new \Exception("The OmdbApiImdbIdConstraint cannot be set on field other than 'imdb_id' of 'omdb_api' entity type.");
+      throw new OmdbApiEntityException("The OmdbApiImdbIdConstraint cannot be set on field other than 'imdb_id' of 'omdb_api' entity type.");
     }
 
     if ($entity instanceof OmdbApiEntityInterface) {
