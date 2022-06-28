@@ -1,4 +1,4 @@
-# include:
+# # include:
 #   # This remote project centralize our CI "golden path" https://docs.gitlab.com/ee/ci/yaml/#includefile
 #   remote: 'https://gitlab.com/drupalspoons/composer-plugin/-/raw/master/templates/.gitlab-ci.yml'
 
@@ -22,6 +22,53 @@
 #   stage: test
 #   script:
 #     - yarn version
+
+# https://docs.gitlab.com/ee/ci/yaml/workflow.html#workflowrules-templates
+include:
+  - template: 'Workflows/MergeRequest-Pipelines.gitlab-ci.yml'
+
+variables:
+  # These are top level vars so they appear on the Run Pipeline form https://docs.gitlab.com/ee/ci/pipelines/#prefill-variables-in-manual-pipelines
+  PHP_TAG:
+    value: "7.4"
+    description: The version of PHP to use for this Pipeline.
+  DRUPAL_CORE_CONSTRAINT:
+    value: ^9
+    description: The constraint which specifies the drupal/core version that is used.
+  COMPOSER: "composer.spoons.json"
+  WEB_ROOT:
+    value: web
+    description: The web root directory.
+
+default:
+  image:
+    name: wodby/php:$PHP_TAG-dev
+
+composer:
+  stage: build
+  variables:
+    # Used the bin/setup script.
+    NONINTERACTIVE: 1
+  # Use artifacts to copy codebase to subsequent jobs.
+  # See https://lorisleiva.com/laravel-deployment-using-gitlab-pipelines/.
+  artifacts:
+    expire_in: 1 week
+    expose_as: 'web-vendor'
+    paths:
+      - vendor/
+      - $WEB_ROOT
+      - .composer-plugin.env
+      - composer.spoons.json
+      - composer.spoons.lock
+  script:
+    - export
+    - bash <(curl -s https://gitlab.com/drupalspoons/composer-plugin/-/raw/master/bin/setup)
+
+validate:
+  stage: test
+  script:
+    - composer validate
+    - composer lint
 
 # Sync with Github
 sync-with-github:
