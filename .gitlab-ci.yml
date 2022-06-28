@@ -1,27 +1,27 @@
-include:
-  # This remote project centralize our CI "golden path" https://docs.gitlab.com/ee/ci/yaml/#includefile
-  remote: 'https://gitlab.com/drupalspoons/composer-plugin/-/raw/master/templates/.gitlab-ci.yml'
+# include:
+#   # This remote project centralize our CI "golden path" https://docs.gitlab.com/ee/ci/yaml/#includefile
+#   remote: 'https://gitlab.com/drupalspoons/composer-plugin/-/raw/master/templates/.gitlab-ci.yml'
 
-# Override phpcs config
-phpcs:
-  stage: test
-  script:
-    - cp -u phpcs.xml $WEB_ROOT/modules/custom
-    - composer phpcs -- --report-junit=junit.xml --report-full --report-summary
-  allow_failure: false
-  artifacts:
-    expose_as: junit
-    expire_in: 6 mos
-    paths:
-      - junit.xml
-    reports:
-      junit: junit.xml
+# # Override phpcs config
+# phpcs:
+#   stage: test
+#   script:
+#     - cp -u phpcs.xml $WEB_ROOT/modules/custom
+#     - composer phpcs -- --report-junit=junit.xml --report-full --report-summary
+#   allow_failure: false
+#   artifacts:
+#     expose_as: junit
+#     expire_in: 6 mos
+#     paths:
+#       - junit.xml
+#     reports:
+#       junit: junit.xml
 
-# Disable stylelint
-stylelint:
-  stage: test
-  script:
-    - yarn version
+# # Disable stylelint
+# stylelint:
+#   stage: test
+#   script:
+#     - yarn version
 
 # Sync with Github
 sync-with-github:
@@ -31,6 +31,7 @@ sync-with-github:
     - git config --global --add safe.directory /builds/project/omdb_api
   script:
     - git remote add github "${GITHUB_REMOTE_REPOSITORY_URL}"
+    - echo "${GITHUB_REMOTE_REPOSITORY_URL}"
     - git checkout 1.x-dev
     - git pull origin 1.x-dev
     - git pull github 1.x-dev
