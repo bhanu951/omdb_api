@@ -5,6 +5,9 @@ include:
 # Sync with Github
 sync-with-github:
   before_script:
+    - echo $GITHUB_USER_NAME
+    - echo $GITHUB_USER_EMAIL
+    - echo $GITHUB_REMOTE_REPOSITORY_URL
     - git config --global user.name "${GITHUB_USER_NAME}"
     - git config --global user.email "${GITHUB_USER_EMAIL}"
     - git config --global --add safe.directory /builds/project/omdb_api
