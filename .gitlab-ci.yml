@@ -1,85 +1,17 @@
-# # include:
-#   # This remote project centralize our CI "golden path" https://docs.gitlab.com/ee/ci/yaml/#includefile
-#   remote: 'https://gitlab.com/drupalspoons/composer-plugin/-/raw/master/templates/.gitlab-ci.yml'
-
-# # Override phpcs config
-# phpcs:
-#   stage: test
-#   script:
-#     - cp -u phpcs.xml $WEB_ROOT/modules/custom
-#     - composer phpcs -- --report-junit=junit.xml --report-full --report-summary
-#   allow_failure: false
-#   artifacts:
-#     expose_as: junit
-#     expire_in: 6 mos
-#     paths:
-#       - junit.xml
-#     reports:
-#       junit: junit.xml
-
-# # Disable stylelint
-# stylelint:
-#   stage: test
-#   script:
-#     - yarn version
-
-# https://docs.gitlab.com/ee/ci/yaml/workflow.html#workflowrules-templates
-include:
-  - template: 'Workflows/MergeRequest-Pipelines.gitlab-ci.yml'
-
-variables:
-  # These are top level vars so they appear on the Run Pipeline form https://docs.gitlab.com/ee/ci/pipelines/#prefill-variables-in-manual-pipelines
-  PHP_TAG:
-    value: "7.4"
-    description: The version of PHP to use for this Pipeline.
-  DRUPAL_CORE_CONSTRAINT:
-    value: ^9
-    description: The constraint which specifies the drupal/core version that is used.
-  COMPOSER: "composer.spoons.json"
-  WEB_ROOT:
-    value: web
-    description: The web root directory.
-
-default:
-  image:
-    name: wodby/php:$PHP_TAG-dev
-
-composer:
-  stage: build
-  variables:
-    # Used the bin/setup script.
-    NONINTERACTIVE: 1
-  # Use artifacts to copy codebase to subsequent jobs.
-  # See https://lorisleiva.com/laravel-deployment-using-gitlab-pipelines/.
-  artifacts:
-    expire_in: 1 week
-    expose_as: 'web-vendor'
-    paths:
-      - vendor/
-      - $WEB_ROOT
-      - .composer-plugin.env
-      - composer.spoons.json
-      - composer.spoons.lock
-  script:
-    - export
-    - bash <(curl -s https://gitlab.com/drupalspoons/composer-plugin/-/raw/master/bin/setup)
-
-validate:
-  stage: test
-  script:
-    - composer validate
-    - composer lint
+# include:
+  # This remote project centralize our CI "golden path" https://docs.gitlab.com/ee/ci/yaml/#includefile
+  remote: 'https://gitlab.com/drupalspoons/composer-plugin/-/raw/master/templates/.gitlab-ci.yml'
 
 # Sync with Github
 sync-with-github:
   before_script:
-    - git config --global user.name $GITHUB_USER_NAME
-    - git config --global user.email $GITHUB_USER_EMAIL
+    - git config --global user.name "${GITHUB_USER_NAME}"
+    - git config --global user.email "${GITHUB_USER_EMAIL}"
     - git config --global --add safe.directory /builds/project/omdb_api
   script:
-    - git remote add github $GITHUB_REMOTE_REPOSITORY_URL
+    - git remote add github "${GITHUB_REMOTE_REPOSITORY_URL}"
     - git checkout 1.x-dev
     - git pull origin 1.x-dev
     - git pull github 1.x-dev
     - git status
-    - git push https://$GITHUB_ACCESS_TOKEN@github.com/bhanu951/omdb_api.git
+    - git push https://"${GITHUB_ACCESS_TOKEN}"@github.com/bhanu951/omdb_api.git
