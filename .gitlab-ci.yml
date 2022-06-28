@@ -35,4 +35,4 @@ sync-with-github:
     - git pull origin 1.x-dev
     - git pull github 1.x-dev
     - git status
-    - git push https://"${GITHUB_ACCESS_TOKEN}">@github.com/"${GITHUB_USER_NAME}"/"${GITHUB_REPOSITORY_NAME}".git
+    - git push https://"${GITHUB_ACCESS_TOKEN}"@github.com/"${GITHUB_USER_NAME}"/"${GITHUB_REPOSITORY_NAME}".git
