@@ -33,7 +33,7 @@ class OmdbApiEntityDevelGenerateCommands extends DevelGenerateCommands {
     array $options = [
       'num' => 50,
       'kill' => FALSE,
-      'bundles' => 'movies,series',
+      'bundles' => 'movie,series',
       'name_length' => 5,
       'time_range' => 604800,
       'feedback' => 100,

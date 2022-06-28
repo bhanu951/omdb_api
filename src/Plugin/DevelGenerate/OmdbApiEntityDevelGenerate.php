@@ -576,12 +576,12 @@ class OmdbApiEntityDevelGenerate extends DevelGenerateBase implements ContainerF
 
     $uid = $results['users'][array_rand($results['users'])];
 
-    // Set type as either Movies or Series.
+    // Set type as either Movie or Series.
     if (isset($results['omdb_api_types'])) {
       $type = $results['omdb_api_types'];
     }
     else {
-      $types = ['series', 'movies'];
+      $types = ['series', 'movie'];
       $index = array_rand($types);
       $type = $types[$index];
     }

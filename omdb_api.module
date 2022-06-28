@@ -8,7 +8,7 @@
 use Drupal\Core\Render\Element;
 use Drupal\user\UserInterface;
 use Drupal\omdb_api\Entity\Bundle\Series;
-use Drupal\omdb_api\Entity\Bundle\Movies;
+use Drupal\omdb_api\Entity\Bundle\Movie;
 
 /**
  * Implements hook_theme().
@@ -101,8 +101,8 @@ function omdb_api_entity_bundle_info_alter(array &$bundles): void {
     $bundles['omdb_api']['series']['class'] = Series::class;
   }
 
-  if (isset($bundles['omdb_api']['movies'])) {
-    $bundles['omdb_api']['movies']['class'] = Movies::class;
+  if (isset($bundles['omdb_api']['movie'])) {
+    $bundles['omdb_api']['movie']['class'] = Movie::class;
   }
 
 }
