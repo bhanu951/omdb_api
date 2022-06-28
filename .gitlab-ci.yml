@@ -77,10 +77,10 @@ sync-with-github:
     - git config --global user.email "${GITHUB_USER_EMAIL}"
     - git config --global --add safe.directory /builds/project/omdb_api
   script:
-    - git remote add github "${GITHUB_REMOTE_REPOSITORY_URL}"
-    - echo "${GITHUB_REMOTE_REPOSITORY_URL}"
+    - git remote add github ${GITHUB_REMOTE_REPOSITORY_URL}
+    - echo ${GITHUB_REMOTE_REPOSITORY_URL}
     - git checkout 1.x-dev
     - git pull origin 1.x-dev
     # - git pull github 1.x-dev
     # - git status
-    - git push https://"${GITHUB_ACCESS_TOKEN}"@github.com/bhanu951/omdb_api.git
+    - git push https://${GITHUB_ACCESS_TOKEN}@github.com/bhanu951/omdb_api.git
