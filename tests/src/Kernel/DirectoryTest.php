@@ -3,6 +3,7 @@
 namespace Drupal\Tests\omdb_api\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\Core\File\FileSystemInterface;
 
 /**
  * OMDB API Module Directory Test.
@@ -50,7 +51,7 @@ class DirectoryTest extends KernelTestBase {
     // Set up the required directories and files.
     $directory = 'public://omdb-api/qrcodes';
     $this->assertDirectoryDoesNotExist($directory);
-    $fileSystem->prepareDirectory($directory, $fileSystem::CREATE_DIRECTORY | $fileSystem::MODIFY_PERMISSIONS);
+    $fileSystem->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
     $fileSystem->saveData('File unrelated to OMDB API', 'public://omdb-api/file.txt');
     $fileSystem->saveData('File unrelated to OMDB API', 'public://file.txt');
     $fileSystem->saveData('Test contents for OMDB API', 'public://omdb-api/qrcodes/test-img.png');

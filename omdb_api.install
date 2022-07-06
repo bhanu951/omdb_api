@@ -19,11 +19,12 @@ function omdb_api_install() {
     $destination = \Drupal::service('file_system')->realpath($default_scheme . "://omdb-api/qrcodes");
 
     // Prepare directory for QR codes storing.
-    \Drupal::service('file_system')->prepareDirectory($destination, FileSystemInterface::CREATE_DIRECTORY || FileSystemInterface::MODIFY_PERMISSIONS);
+    \Drupal::service('file_system')->prepareDirectory($destination, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
   }
   catch (OmdbApiEntityException $e) {
     \Drupal::logger('omdb_api')->warning(sprintf('Unable to create directories, following error logged %s ', $e->getMessage()));
   }
+
 }
 
 /**
@@ -32,11 +33,11 @@ function omdb_api_install() {
 function omdb_api_requirements($phase) {
 
   $requirements = [];
-  if ($phase == 'install') {
+  if (($phase == 'install') || ($phase == 'runtime')) {
     $default_scheme = \Drupal::config('system.file')->get('default_scheme')
       ?? \Drupal::service('file_system')->getTempDirectory();
     $destination = \Drupal::service('file_system')->realpath($default_scheme . "://omdb-api/qrcodes");
-    \Drupal::service('file_system')->prepareDirectory($destination, FileSystemInterface::CREATE_DIRECTORY || FileSystemInterface::MODIFY_PERMISSIONS);
+    \Drupal::service('file_system')->prepareDirectory($destination, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
     $is_writable = is_writable($destination);
     $is_directory = is_dir($destination);
     if (!$is_writable || !$is_directory) {
@@ -55,4 +56,23 @@ function omdb_api_requirements($phase) {
     }
   }
   return $requirements;
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function omdb_api_uninstall() {
+
+  // Remove the qr codes directory and generated images.
+
+  /** @var \Drupal\Core\File\FileSystemInterface $file_system */
+  $file_system = \Drupal::service('file_system');
+  try {
+    $file_system
+      ->deleteRecursive(\Drupal::config('system.file')
+        ->get('default_scheme') . '://omdb-api/qrcodes');
+  }
+  catch (OmdbApiEntityException $e) {
+    \Drupal::logger('omdb_api')->warning(sprintf('Unable to delete directories, following error logged %s ', $e->getMessage()));
+  }
 }

@@ -37,7 +37,7 @@ class OmdbApiEntityDevelGenerateCommands extends DevelGenerateCommands {
       'name_length' => 5,
       'time_range' => 604800,
       'feedback' => 100,
-
+      'add_alias' => TRUE,
     ]
   ) {
     // Run the generate command.

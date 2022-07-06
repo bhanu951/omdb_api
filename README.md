@@ -90,3 +90,5 @@ $dateTime = new DrupalDateTime();
     ])->render();
 
 https://dev.to/brunorobert/github-and-gitlab-sync-44mn
+
+https://github.com/hardyoyo/code4lib2021-workshop

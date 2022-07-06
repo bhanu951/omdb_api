@@ -69,6 +69,7 @@ class OmdbApiEntityListBuilder extends EntityListBuilder {
   public function buildHeader() {
     $header['id'] = $this->t('ID');
     $header['label'] = $this->t('Label');
+    $header['bundle'] = $this->t('Bundle');
     $header['status'] = $this->t('Status');
     $header['uid'] = $this->t('Author');
     $header['created'] = $this->t('Created');
@@ -83,7 +84,8 @@ class OmdbApiEntityListBuilder extends EntityListBuilder {
     /** @var \Drupal\omdb_api\Entity\OmdbApiEntityInterface $entity */
     $row['id'] = $entity->id();
     $row['label'] = $entity->toLink();
-    $row['status'] = $entity->get('status')->value ? $this->t('Enabled') : $this->t('Disabled');
+    $row['bundle'] = ucfirst($entity->bundle());
+    $row['status'] = $entity->get('status')->value ? $this->t('Published') : $this->t('Un-Published');
     $row['uid']['data'] = [
       '#theme' => 'username',
       '#account' => $entity->getOwner(),
