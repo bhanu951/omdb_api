@@ -86,9 +86,8 @@ $dateTime = new DrupalDateTime();
 
     return t('@user - @date', [
       '@user' => \Drupal::currentUser()->getAccountName(),
-      '@date' => \Drupal::service('date.formatter')->format($dateTime->getTimestamp(), 'html_date'),
+      '@date' => \Drupal::service('date.formatter')
+      ->format($dateTime->getTimestamp(), 'html_date'),
     ])->render();
 
 https://dev.to/brunorobert/github-and-gitlab-sync-44mn
-
-https://github.com/hardyoyo/code4lib2021-workshop

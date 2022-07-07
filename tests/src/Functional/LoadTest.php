@@ -126,11 +126,9 @@ class LoadTest extends BrowserTestBase {
     $this->drupalGet('/admin/modules');
     $page->checkField('modules[omdb_api][enable]');
     $page->pressButton('Install');
-    // @todo Change this once issue with directory creaton is fixed.
-    $assert_session->pageTextContains('The directory does not exist. An automated attempt to create this directory failed, possibly due to a permissions problem. To proceed with the installation, either create the directory and modify its permissions manually or ensure that the installer has the permissions to create it automatically.');
-    // $assert_session->pageTextNotContains('The directory does not exist. An automated attempt to create this directory failed, possibly due to a permissions problem. To proceed with the installation, either create the directory and modify its permissions manually or ensure that the installer has the permissions to create it automatically.');
+    $assert_session->pageTextNotContains('The directory does not exist. An automated attempt to create this directory failed, possibly due to a permissions problem. To proceed with the installation, either create the directory and modify its permissions manually or ensure that the installer has the permissions to create it automatically.');
+    $assert_session->pageTextContains('Module OMDB API has been enabled.');
     $assert_session->pageTextNotContains('Unable to install OMDB API');
-    // $assert_session->pageTextContains('Module OMDB API has been enabled');
   }
 
 }

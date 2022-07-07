@@ -44,18 +44,23 @@ class OmdbApiEntityHtmlRouteProvider extends DefaultHtmlRouteProvider {
       $collection->add("entity.{$entity_type_id}.revision_revert_translation", $translation_route);
     }
 
-    // If ($export_route = $this->getEntityExportRoute($entity_type)) {
+  // @codingStandardsIgnoreStart
+
+    // if ($export_route = $this->getEntityExportRoute($entity_type)) {
     //   $collection->add("entity.{$entity_type_id}.export", $export_route);
-    // }.
-    // If ($settings_form_route = $this->getCredentialsSettingsFormRoute($entity_type)) {
+    // }
+    // if ($settings_form_route = $this->getCredentialsSettingsFormRoute($entity_type)) {
     //   $collection->add("entity.{$entity_type_id}_credentials.settings_form", $settings_form_route);
-    // }.
-    // If ($logger_settings_form_route = $this->getOmdbApiLoggerSettingsFormRoute($entity_type)) {
+    // }
+    // if ($logger_settings_form_route = $this->getOmdbApiLoggerSettingsFormRoute($entity_type)) {
     //   $collection->add("entity.{$entity_type_id}_logger.settings_form", $logger_settings_form_route);
-    // }.
-    // If ($logger_settings_form_route = $this->getOmdbApiLogViewControllerRoute($entity_type)) {
+    // }
+    // if ($logger_settings_form_route = $this->getOmdbApiLogViewControllerRoute($entity_type)) {
     //   $collection->add("entity.{$entity_type_id}.log_view", $logger_settings_form_route);
-    // }.
+    // }
+
+  // @codingStandardsIgnoreEnd
+
     return $collection;
 
   }

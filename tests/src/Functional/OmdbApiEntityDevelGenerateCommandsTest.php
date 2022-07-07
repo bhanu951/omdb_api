@@ -62,7 +62,10 @@ class OmdbApiEntityDevelGenerateCommandsTest extends BrowserTestBase {
   public function testDrushGenerateOmdbApiEntities() {
 
     // Creates omdb api entities With out Kill Option.
-    $this->drush('devel-generate:omdb-api', [], ['num' => 55, 'bundles' => 'movie,series']);
+    $this->drush('devel-generate:omdb-api', [], [
+      'num' => 55,
+      'bundles' => 'movie,series',
+    ]);
     $omdb_api_entities = \Drupal::entityQuery('omdb_api')->accessCheck(TRUE)->execute();
     $this->assertCount(55, $omdb_api_entities);
     $messages = $this->getErrorOutput();
