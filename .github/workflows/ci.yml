@@ -25,7 +25,7 @@ jobs:
 
     steps:
       - name: Checkout Drupal core
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
         with:
           repository: drupal/recommended-project
           ref: ${{ matrix.drupal-core }}
