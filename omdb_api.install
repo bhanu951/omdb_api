@@ -8,6 +8,7 @@
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\omdb_api\Entity\Exception\OmdbApiEntityException;
+use Drupal\user\Entity\Role;
 
 /**
  * Implements hook_install().
@@ -76,4 +77,22 @@ function omdb_api_uninstall() {
     \Drupal::logger('omdb_api')->warning(sprintf('Unable to delete directories, following error logged %s ', $e->getMessage()));
   }
 
+}
+
+/**
+ * Update hook to add new permissions to Anonymous and Authenticated roles.
+ */
+function omdb_api_update_8001() {
+
+  $anonymous_role = Role::load('anonymous');
+  if (!empty($anonymous_role) && !$anonymous_role->hasPermission(('View omdb api entities'))) {
+    $anonymous_role->grantPermission('View omdb api entities');
+    $anonymous_role->save();
+  }
+  $authenticated_role = Role::load('authenticated');
+
+  if (!empty($authenticated_role) && !$authenticated_role->hasPermission(('View omdb api entities'))) {
+    $authenticated_role->grantPermission('View omdb api entities');
+    $authenticated_role->save();
+  }
 }

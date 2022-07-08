@@ -6,7 +6,7 @@ include:
 phpcs:
   stage: test
   script:
-    - cp -u $WEB_ROOT/phpcs.xml.dist $WEB_ROOT/modules/custom
+    - cp -u $WEB_ROOT/core/phpcs.xml.dist $WEB_ROOT/modules/custom
     - composer phpcs -- --report-junit=junit.xml --report-full --report-summary
   allow_failure: false
   artifacts:

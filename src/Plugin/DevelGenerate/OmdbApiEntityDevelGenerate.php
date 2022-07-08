@@ -431,7 +431,7 @@ class OmdbApiEntityDevelGenerate extends DevelGenerateBase implements ContainerF
    *
    * @see self::omdbApiEntityKill()
    */
-  public function batchOmdbApiEntityKill(array $vars, object &$context) {
+  public function batchOmdbApiEntityKill(array $vars, &$context) {
 
     if ($this->drushBatch) {
       $this->omdbApiEntityKill();
@@ -620,7 +620,7 @@ class OmdbApiEntityDevelGenerate extends DevelGenerateBase implements ContainerF
     if (!empty($results['add_alias'])) {
       $path_alias = $this->aliasStorage->create([
         'path' => '/content/omdb-api/' . $omdb_api_entity->id(),
-        'alias' => '/path-alias/content/omdb-api/' . $type . $omdb_api_entity->id(),
+        'alias' => '/path-alias/content/omdb-api/' . $type . '/' . $omdb_api_entity->id(),
         'langcode' => $values['langcode'] ?? LanguageInterface::LANGCODE_NOT_SPECIFIED,
       ]);
       $path_alias->save();
@@ -645,6 +645,15 @@ class OmdbApiEntityDevelGenerate extends DevelGenerateBase implements ContainerF
     $values['feedback'] = $options['feedback'];
     $values['name_length'] = 6;
     $values['num'] = $options['num'];
+
+    if (isset($options['bundles'])) {
+      $types = explode(",", $options['bundles']);
+      $index = array_rand($types);
+      $values['omdb_api_types'] = $types[$index];
+
+    }
+
+    $values['add_alias'] = $options['add_alias'];
 
     if ($this->isBatch($values['num'])) {
       $this->drushBatch = TRUE;
