@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\omdb_api\Functional;
 
-use Drupal\Tests\BrowserTestBase;
 use DrupalFinder\DrupalFinder;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -11,16 +10,7 @@ use Symfony\Component\Filesystem\Filesystem;
  *
  * @group omdb_api
  */
-class LoadTest extends BrowserTestBase {
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stable';
-  /**
-   * {@inheritdoc}
-   */
-  protected static $modules = ['node', 'block', 'omdb_api'];
+class LoadTest extends OmdbApiEntityBrowserTestBase {
 
   /**
    * {@inheritdoc}
@@ -73,9 +63,8 @@ class LoadTest extends BrowserTestBase {
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains('OMDB API Type');
     // @todo Change this once issue with bundles creaton is fixed.
-    $this->assertSession()->pageTextContains('No omdb api types available.');
-    // $this->assertSession()->
-    // pageTextNotContains('No omdb api types available.');.
+    // $this->assertSession()->pageTextContains('No omdb api types available.');
+    $this->assertSession()->pageTextNotContains('No omdb api types available.');
   }
 
   /**

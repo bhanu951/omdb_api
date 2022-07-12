@@ -29,3 +29,7 @@ entity.omdb_api.version_history:
   route_name: entity.omdb_api.version_history
   base_route: entity.omdb_api.canonical
   title: 'Revisions'
+
+# entity.omdb_api.local_tasks:
+#   deriver: 'Drupal\omdb_api\Plugin\Derivative\OmdbApiDynamicLocalTasks'
+#   weight: 100
