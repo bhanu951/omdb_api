@@ -6,10 +6,6 @@ on:
     branches: [ 1.x-dev ]
   schedule:
     - cron: '0 6 * * 0'
-env:
-  COMPOSER_MEMORY_LIMIT: -1
-  SIMPLETEST_DB: sqlite://tmp/site.sqlite
-  SIMPLETEST_BASE_URL: "http://127.0.0.1:8080"
 
 jobs:
   testing:
@@ -18,48 +14,82 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        drupal-core: ['9.4.x', '10.x']
+        drupal-core: ['9.4.*', '10.*']
         php-versions: ['7.4', '8.0', '8.1']
         composer-channel: ['stable']
         drupal-release: ['stable']
-
+        omdb_api: ['1.x-dev']
+    name: Drupal ${{ matrix.drupal }} | OMDB API ${{ matrix.omdb_api }}
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: db
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
-      - name: Checkout Drupal core
-        uses: actions/checkout@v2
+      - name: Setup secondary database for OMDB API
+        run: |
+          mysql -uroot -h127.0.0.1 -P${{ job.services.mysql.ports[3306] }} -e 'CREATE DATABASE IF NOT EXISTS db_omdb_api;'
+      - uses: actions/checkout@v2
+      - uses: shivammathur/setup-php@v2
         with:
-          repository: drupal/recommended-project
-          ref: ${{ matrix.drupal-core }}
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+            php-version: 7.4
+            extensions: dom, curl, libxml, mbstring, zip, pdo, mysql, pdo_mysql, bcmath, soap, intl, gd, exif, iconv
+            coverage: none
+            tools: composer:v2
+      - name: Get composer cache directory
+        id: composercache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - uses: actions/cache@v2
         with:
-          php-version: ${{ matrix.php-versions }}
-          extensions: gd, pdo_sqlite
-
-      - name: Update composer
-        run: composer --verbose self-update --${{ matrix.composer-channel }}
-
-      - name: Dump composer version
-        run: composer --version
-
-      - name: Validate composer.json
-        run: composer --verbose validate
-
-      - name: Install dependencies
-        run: composer --verbose install
-
-      - run: ./vendor/bin/drush site-install --verbose --yes --db-url=sqlite://tmp/site.sqlite
-
-      - run: ./vendor/bin/drush runserver $SIMPLETEST_BASE_URL &
-
-      - run: until curl -s $SIMPLETEST_BASE_URL; do true; done > /dev/null
-
-        # https://www.drupal.org/project/drupal/issues/3182653
-        # https://www.drupal.org/node/3176567
-      - if: ${{ matrix.php-versions == '7.4' }} || ${{ matrix.php-versions == '8.1' }}
-        run: composer require phpspec/prophecy-phpunit:^2
-
-      - name: Run a single unit test to verfiy the testing setup.
-        run: ./vendor/bin/phpunit -c ./web/core ./web/core/modules/user/tests/src/Unit/UserAccessControlHandlerTest.php
-
-      - run: ./vendor/bin/drush st
+            path: ${{ steps.composercache.outputs.dir }}
+            key: ${{ runner.os }}-${{ matrix.drupal }}-composer-${{ hashFiles('**/composer.json') }}
+            restore-keys: ${{ runner.os }}-composer-
+      - name: Setup problem matchers for PHPUnit
+        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+      - name: Setup Drupal
+        run: |
+          COMPOSER_MEMORY_LIMIT=-1 composer create-project drupal/recommended-project:${{ matrix.drupal }} ~/drupal --no-interaction
+          cd ~/drupal
+          composer config extra.enable-patching true
+          composer config extra.compile-mode all
+          composer config minimum-stability dev
+          composer config prefer-stable true
+          composer config preferred-install dist
+          composer config repositories.0 composer https://packages.drupal.org/8
+          composer config repositories.1 path $GITHUB_WORKSPACE
+          COMPOSER_MEMORY_LIMIT=-1 composer require drupal/core-dev-pinned:${{ matrix.drupal }} --no-suggest
+      - name: Install OMDB API ${{ matrix.omdb_api }}
+        run: |
+          cd ~/drupal
+          COMPOSER_MEMORY_LIMIT=-1 composer require drupal/omdb_api
+      - name: Install integration test modules
+        run: |
+          cd ~/drupal
+          COMPOSER_MEMORY_LIMIT=-1 composer require drupal/migrate_tools drupal/devel_generate
+      - uses: nanasess/setup-chromedriver@master
+      - name: Run chromedriver
+        run: chromedriver &
+      - name: Run php built-in server
+        run: php -S 127.0.0.1:8080 -t ~/drupal/web &
+      - name: Run PHPUnit
+        run: |
+          mkdir $BROWSERTEST_OUTPUT_DIRECTORY
+          cd ~/drupal/web
+          ../vendor/bin/phpunit -c core modules/contrib/omdb_api
+        env:
+          SYMFONY_DEPRECATIONS_HELPER: disabled
+          SIMPLETEST_DB: mysql://root:@127.0.0.1:${{ job.services.mysql.ports[3306] }}/db
+          SIMPLETEST_OMDB_API_DB: mysql://root:@127.0.0.1:${{ job.services.mysql.ports[3306] }}/db_omdb_api
+          SIMPLETEST_BASE_URL: http://127.0.0.1:8080
+          MINK_DRIVER_ARGS_WEBDRIVER: '["chrome", {"browserName":"chrome","chromeOptions":{"args":["--disable-gpu", "--no-sandbox", "--headless"]}}, "http://127.0.0.1:9515"]'
+          BROWSERTEST_OUTPUT_DIRECTORY: '${{ runner.temp }}/browser_output'
+      - uses: actions/upload-artifact@v2
+        if: ${{ failure() || success() }}
+        with:
+          name: phpunit_browser_output
+          # For some reason Drupal prints here and not our specified BROWSERTEST_OUTPUT_DIRECTORY.
+          path: '/home/runner/drupal/web/sites/simpletest/browser_output'
