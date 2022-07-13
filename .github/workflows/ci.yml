@@ -9,7 +9,6 @@ on:
 
 jobs:
   testing:
-    name: Drupal ${{ matrix.drupal-core }} - PHP ${{ matrix.php-versions }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -19,7 +18,7 @@ jobs:
         composer-channel: ['stable']
         drupal-release: ['stable']
         omdb_api: ['1.x-dev']
-    name: Drupal ${{ matrix.drupal }} | OMDB API ${{ matrix.omdb_api }}
+    name: Drupal ${{ matrix.drupal-core }} - PHP ${{ matrix.php-versions }} | OMDB API ${{ matrix.omdb_api }}
     services:
       mysql:
         image: mysql:5.7
