@@ -68,7 +68,7 @@ class OmdbApiEntityForm extends ContentEntityForm implements ContainerInjectionI
 
       $request_time = $this->time->getCurrentTime();
       $current_user = $this->currentUser->id();
-      $entity->setNewRevision();
+      $entity->setNewRevision(TRUE);
       $entity->isDefaultRevision(TRUE);
       // If a new revision is created, save the current user as revision author.
       $entity->setRevisionCreationTime($request_time);

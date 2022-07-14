@@ -136,6 +136,15 @@ class OmdbApiEntity extends RevisionableContentEntityBase implements OmdbApiEnti
     if (!$this->getRevisionUser()) {
       $this->setRevisionUserId($this->getOwnerId());
     }
+
+    if ($this->isNew()) {
+      $this->setCreatedTime(time());
+    }
+    else {
+      $this->setRevisionCreationTime(time());
+      $this->setChangedTime(time());
+    }
+
   }
 
   /**

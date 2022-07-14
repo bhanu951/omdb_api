@@ -102,7 +102,7 @@ class OmdbApiEntityRevisionDeleteForm extends ConfirmFormBase {
 
     $this->omdbApiEntityStorage->deleteRevision($this->revision->getRevisionId());
 
-    $this->logger('content')->notice($this->t('Omdb API Entity: deleted %title revision %revision.', [
+    $this->logger('omdb_api')->notice($this->t('Omdb API Entity: deleted %title revision %revision.', [
       '%title' => $this->revision->label(),
       '%revision' => $this->revision->getRevisionId(),
     ]));

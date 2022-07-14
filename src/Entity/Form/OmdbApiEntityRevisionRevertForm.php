@@ -108,7 +108,7 @@ class OmdbApiEntityRevisionRevertForm extends ConfirmFormBase {
     ]);
     $this->revision->save();
 
-    $this->logger('content')->notice($this->t('OmdbApi: reverted %title revision %revision.', [
+    $this->logger('omdb_api')->notice($this->t('OmdbApi: reverted %title revision %revision.', [
       '%title' => $this->revision->label(),
       '%revision' => $this->revision->getRevisionId(),
     ]));
