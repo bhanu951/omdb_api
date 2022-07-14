@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        drupal-core: ['9.4', '10']
+        drupal-core: ['9.4', '9.5.x-dev', '10.0.x-dev']
         php-versions: ['7.4', '8.0', '8.1']
         composer-channel: ['stable']
         drupal-release: ['stable']
@@ -31,7 +31,7 @@ jobs:
     steps:
       - name: Setup secondary database for OMDB API
         run: |
-          mysql -uroot -h127.0.0.1 -P${{ job.services.mysql.ports[3306] }} -e 'CREATE DATABASE IF NOT EXISTS db_omdb_api;'
+          mysql -uroot -h127.0.0.1 -P${{ job.services.mysql.ports[3306] }} -e 'CREATE DATABASE IF NOT EXISTS testing_db_omdb_api;'
       - uses: actions/checkout@v2
       - uses: shivammathur/setup-php@v2
         with:
@@ -60,16 +60,16 @@ jobs:
           composer config preferred-install dist
           composer config repositories.0 composer https://packages.drupal.org/8
           composer config repositories.1 path $GITHUB_WORKSPACE
-          COMPOSER_MEMORY_LIMIT=-1 composer require drupal/core-dev:^${{ matrix.drupal-core }} --no-suggest
-          COMPOSER_MEMORY_LIMIT=-1 composer require --dev phpspec/prophecy-phpunit:^2
+          COMPOSER_MEMORY_LIMIT=-1 composer require -W drupal/core-dev:^${{ matrix.drupal-core }}
+          COMPOSER_MEMORY_LIMIT=-1 composer require --dev -W phpspec/prophecy-phpunit:^2
       - name: Install OMDB API ${{ matrix.omdb_api }}
         run: |
           cd ~/drupal
-          COMPOSER_MEMORY_LIMIT=-1 composer require drupal/omdb_api
+          COMPOSER_MEMORY_LIMIT=-1 composer require -W drupal/omdb_api
       - name: Install integration test modules
         run: |
           cd ~/drupal
-          COMPOSER_MEMORY_LIMIT=-1 composer require drupal/migrate_tools drupal/devel_generate
+          COMPOSER_MEMORY_LIMIT=-1 composer require -W drupal/migrate_tools drupal/devel_generate
       - uses: nanasess/setup-chromedriver@master
       - name: Run chromedriver
         run: chromedriver &
@@ -82,8 +82,8 @@ jobs:
           ../vendor/bin/phpunit -c core modules/contrib/omdb_api
         env:
           SYMFONY_DEPRECATIONS_HELPER: disabled
-          SIMPLETEST_DB: mysql://root:@127.0.0.1:${{ job.services.mysql.ports[3306] }}/db
-          SIMPLETEST_OMDB_API_DB: mysql://root:@127.0.0.1:${{ job.services.mysql.ports[3306] }}/db_omdb_api
+          SIMPLETEST_DB: mysql://root:@127.0.0.1:${{ job.services.mysql.ports[3306] }}/db_omdb_api
+          SIMPLETEST_OMDB_API_DB: mysql://root:@127.0.0.1:${{ job.services.mysql.ports[3306] }}/testing_db_omdb_api
           SIMPLETEST_BASE_URL: http://127.0.0.1:8080
           MINK_DRIVER_ARGS_WEBDRIVER: '["chrome", {"browserName":"chrome","chromeOptions":{"args":["--disable-gpu", "--no-sandbox", "--headless"]}}, "http://127.0.0.1:9515"]'
           BROWSERTEST_OUTPUT_DIRECTORY: '${{ runner.temp }}/browser_output'
