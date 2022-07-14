@@ -63,8 +63,9 @@ class LoadTest extends OmdbApiEntityBrowserTestBase {
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains('OMDB API Type');
     // @todo Change this once issue with bundles creaton is fixed.
-    // $this->assertSession()->pageTextContains('No omdb api types available.');
-    $this->assertSession()->pageTextNotContains('No omdb api types available.');
+    $this->assertSession()->pageTextContains('No omdb api types available.');
+    // $this->assertSession()
+    // ->pageTextNotContains('No omdb api types available.');
   }
 
   /**

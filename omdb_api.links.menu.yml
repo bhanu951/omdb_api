@@ -5,7 +5,7 @@ entity.omdb_api.collection:
   route_name: entity.omdb_api.collection
   parent: system.admin_content
 
-# List of OMDB API Entity Type Content.
+# # List of OMDB API Entity Type Content.
 entity.omdb_api_type.collection:
   title: 'OMDB API Entity Types'
   description: 'Manages OMDB API Entity Types.'
@@ -14,6 +14,5 @@ entity.omdb_api_type.collection:
 
 # OMDB API Entity Bundle Types Menu Links.
 entity.omdb_api.add_content:
-  # parent: entity.omdb_api.collection
   class: Drupal\omdb_api\Plugin\Menu\OmdbApiEntityBundlesMenuLinks
   deriver: Drupal\omdb_api\Plugin\Derivative\OmdbApiEntityBundlesMenuLinksDerivative

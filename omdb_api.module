@@ -93,12 +93,15 @@ function omdb_api_user_predelete(UserInterface $account) {
 }
 
 /**
- * Implements hook_entity_bundle_info().
+ * Implements hook_entity_bundle_info_alter().
  */
-function omdb_api_entity_bundle_info() {
+function omdb_api_entity_bundle_info_alter(array &$bundles): void {
 
-  $bundles['omdb_api']['series']['class'] = Series::class;
-  $bundles['omdb_api']['movie']['class'] = Movie::class;
+  if (isset($bundles['omdb_api']['series'])) {
+    $bundles['omdb_api']['series']['class'] = Series::class;
+  }
 
-  return $bundles;
+  if (isset($bundles['omdb_api']['movie'])) {
+    $bundles['omdb_api']['movie']['class'] = Movie::class;
+  }
 }
