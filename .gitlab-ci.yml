@@ -1,21 +1,9 @@
-include:
-  # This remote project centralize our CI "golden path" https://docs.gitlab.com/ee/ci/yaml/#includefile
-  remote: 'https://gitlab.com/drupalspoons/composer-plugin/-/raw/master/templates/.gitlab-ci.yml'
+variables:
+    DRUPAL_PROJECT_TYPE: modules
 
-# Override phpcs config
-phpcs:
-  stage: test
-  script:
-    - cp -u $WEB_ROOT/core/phpcs.xml.dist $WEB_ROOT/modules/custom
-    - composer phpcs -- --report-junit=junit.xml --report-full --report-summary
-  allow_failure: false
-  artifacts:
-    expose_as: junit
-    expire_in: 6 mos
-    paths:
-      - junit.xml
-    reports:
-      junit: junit.xml
+include:
+  - project: 'comunique/drupal_docker'
+    file: '/Drupal_CI/gitlab-ci.yml'
 
 # Sync with Github
 sync-with-github:
