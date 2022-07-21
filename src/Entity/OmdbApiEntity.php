@@ -18,6 +18,8 @@ use Drupal\Core\Datetime\DrupalDateTime;
 /**
  * Defines the omdb api entity class.
  *
+ * @ingroup omdb_api
+ *
  * @ContentEntityType(
  *   id = "omdb_api",
  *   label = @Translation("OMDB API"),
@@ -42,6 +44,7 @@ use Drupal\Core\Datetime\DrupalDateTime;
  *       "delete" = "Drupal\omdb_api\Entity\Form\OmdbApiEntityDeleteForm",
  *       "delete-multiple-confirm" = "Drupal\omdb_api\Entity\Form\OmdbApiEntityMultipleDeleteForm",
  *     },
+ *     "access" = "Drupal\omdb_api\Entity\Access\OmdbApiEntityAccessControlHandler",
  *     "route_provider" = {
  *       "html" = "Drupal\omdb_api\Entity\Routing\OmdbApiEntityHtmlRouteProvider",
  *     }
@@ -83,6 +86,7 @@ use Drupal\Core\Datetime\DrupalDateTime;
  *   },
  *   bundle_entity_type = "omdb_api_type",
  *   field_ui_base_route = "entity.omdb_api_type.edit_form",
+ *   permission_granularity = "bundle",
  * )
  */
 class OmdbApiEntity extends RevisionableContentEntityBase implements OmdbApiEntityInterface {
