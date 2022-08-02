@@ -10,11 +10,27 @@ on:
 jobs:
   testing:
     runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
     strategy:
       fail-fast: false
       matrix:
-        drupal-core: ['9.4', '9.5.x-dev']
-        php-versions: ['7.4', '8.0', '8.1']
+        experimental: [false]
+        php-version:
+          - "7.4"
+          - "8.0"
+          - "8.1"
+        drupal-core:
+          # Should update the following as the minimum supported version from Drupal.org
+          - "9.3.x"
+          - "9.4.x"
+          - "9.5.x-dev"
+        exclude:
+           - php-version: "8.1"
+             drupal-core: "9.3.x"
+#        include:
+#           - php-version: "8.1"
+#             drupal-core: "10.0.x-dev"
+#             experimental: true
         composer-channel: ['stable']
         drupal-release: ['stable']
         omdb_api: ['1.x-dev']
@@ -90,6 +106,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         if: ${{ failure() || success() }}
         with:
-          name: phpunit_browser_output
+        name: browser-output-${{ matrix.php-version }}-${{ matrix.drupal-core }}-${{ matrix.instance-type }}-artifact
           # For some reason Drupal prints here and not our specified BROWSERTEST_OUTPUT_DIRECTORY.
-          path: '/home/runner/drupal/web/sites/simpletest/browser_output'
+          path: 'drupal/web/sites/simpletest/browser_output'
+          retention-days: 7

@@ -91,3 +91,11 @@ $dateTime = new DrupalDateTime();
     ])->render();
 
 https://dev.to/brunorobert/github-and-gitlab-sync-44mn
+
+
+## Issues :
+
+1. Might produce https://www.drupal.org/project/drupal/issues/3028354
+
+The website encountered an unexpected error. Please try again later.
+TypeError: Argument 2 passed to Drupal\content_translation\Controller\ContentTranslationController::add() must implement interface Drupal\Core\Language\LanguageInterface, null given in Drupal\content_translation\Controller\ContentTranslationController->add() (line 361 of core/modules/content_translation/src/Controller/ContentTranslationController.php).

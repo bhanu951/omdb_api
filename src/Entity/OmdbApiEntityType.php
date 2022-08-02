@@ -40,7 +40,8 @@ use Drupal\Core\Config\Entity\ConfigEntityBundleBase;
  *     "add-form" = "/admin/structure/omdb_api_types/add",
  *     "edit-form" = "/admin/structure/omdb_api_types/manage/{omdb_api_type}",
  *     "delete-form" = "/admin/structure/omdb_api_types/manage/{omdb_api_type}/delete",
- *     "collection" = "/admin/structure/omdb_api_types"
+ *     "collection" = "/admin/structure/omdb_api_types",
+ *     "canonical" = "/admin/structure/omdb_api_types"
  *   },
  *   config_export = {
  *     "id",
