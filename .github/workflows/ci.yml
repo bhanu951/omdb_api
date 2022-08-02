@@ -106,7 +106,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         if: ${{ failure() || success() }}
         with:
-        name: browser-output-${{ matrix.php-version }}-${{ matrix.drupal-core }}-${{ matrix.instance-type }}-artifact
+        name: browser-output-php-${{ matrix.php-version }}-core-${{ matrix.drupal-core }}-${{ matrix.instance-type }}-artifact
           # For some reason Drupal prints here and not our specified BROWSERTEST_OUTPUT_DIRECTORY.
-          path: 'drupal/web/sites/simpletest/browser_output'
+          path: 'drupal/web/sites/simpletest/browser_output/*'
           retention-days: 7
