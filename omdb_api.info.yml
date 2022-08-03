@@ -9,8 +9,8 @@ dependencies:
   - drupal:options
   - drupal:taxonomy
   - drupal:content_translation
-  # - drupal:migrate_tools
-  # - drupal:devel_generate
+  - drupal:migrate_tools
+  - drupal:devel_generate
   - drupal:path_alias
   - drupal:block
 

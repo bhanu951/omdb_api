@@ -103,10 +103,10 @@ jobs:
           SIMPLETEST_BASE_URL: http://127.0.0.1:8080
           MINK_DRIVER_ARGS_WEBDRIVER: '["chrome", {"browserName":"chrome","chromeOptions":{"args":["--disable-gpu", "--no-sandbox", "--headless"]}}, "http://127.0.0.1:9515"]'
           BROWSERTEST_OUTPUT_DIRECTORY: '${{ runner.temp }}/browser_output'
-      - uses: actions/upload-artifact@v2
+      - name: browser-output-php-${{ matrix.php-version }}-core-${{ matrix.drupal-core }}-${{ matrix.instance-type }}-artifact
+         uses: actions/upload-artifact@v2
         if: ${{ failure() || success() }}
         with:
-        name: browser-output-php-${{ matrix.php-version }}-core-${{ matrix.drupal-core }}-${{ matrix.instance-type }}-artifact
           # For some reason Drupal prints here and not our specified BROWSERTEST_OUTPUT_DIRECTORY.
           path: 'drupal/web/sites/simpletest/browser_output/*'
           retention-days: 7

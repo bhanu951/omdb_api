@@ -14,6 +14,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Entity\RevisionableInterface;
 use Drupal\user\UserInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Entity\EntityPublishedTrait;
 
 /**
  * Defines the omdb api entity class.
@@ -44,7 +45,6 @@ use Drupal\Core\Datetime\DrupalDateTime;
  *       "delete" = "Drupal\omdb_api\Entity\Form\OmdbApiEntityDeleteForm",
  *       "delete-multiple-confirm" = "Drupal\omdb_api\Entity\Form\OmdbApiEntityMultipleDeleteForm",
  *     },
- *     "access" = "Drupal\omdb_api\Entity\Access\OmdbApiEntityAccessControlHandler",
  *     "route_provider" = {
  *       "html" = "Drupal\omdb_api\Entity\Routing\OmdbApiEntityHtmlRouteProvider",
  *     }
@@ -64,6 +64,7 @@ use Drupal\Core\Datetime\DrupalDateTime;
  *     "label" = "imdb_title",
  *     "uuid" = "uuid",
  *     "owner" = "uid",
+ *     "published" = "status",
  *   },
  *   revision_metadata_keys = {
  *     "revision_user" = "revision_uid",
@@ -93,6 +94,7 @@ class OmdbApiEntity extends RevisionableContentEntityBase implements OmdbApiEnti
 
   use EntityChangedTrait;
   use EntityOwnerTrait;
+  use EntityPublishedTrait;
 
   /**
    * {@inheritdoc}
@@ -141,14 +143,28 @@ class OmdbApiEntity extends RevisionableContentEntityBase implements OmdbApiEnti
       $this->setRevisionUserId($this->getOwnerId());
     }
 
-    if ($this->isNew()) {
-      $this->setCreatedTime(time());
-    }
-    else {
-      $this->setRevisionCreationTime(time());
-      $this->setChangedTime(time());
-    }
+    // If ($this->isNew()) {
+    //   $this->setCreatedTime(time());
+    // }
+    // else {
+    //   $this->setRevisionCreationTime(time());
+    //   $this->setChangedTime(time());
+    // }
+  }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function preSaveRevision(EntityStorageInterface $storage, \stdClass $record) {
+    parent::preSaveRevision($storage, $record);
+
+    if (!$this->isNewRevision() && isset($this->original) && (!isset($record->revision_log) || $record->revision_log === '')) {
+      // If we are updating an existing product without adding a new revision,
+      // we need to make sure $entity->revision_log is reset whenever it is
+      // empty. Therefore, this code allows us to avoid clobbering an existing
+      // log entry with an empty one.
+      $record->revision_log = $this->original->revision_log->value;
+    }
   }
 
   /**
