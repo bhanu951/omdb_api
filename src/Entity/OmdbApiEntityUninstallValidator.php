@@ -36,13 +36,10 @@ class OmdbApiEntityUninstallValidator implements ModuleUninstallValidatorInterfa
    * {@inheritdoc}
    */
   public function validate($module) {
+
     $reasons = [];
-    // If ($module == 'omdb_api') {
-    //   if ($this->hasOmdbApiEntityContent()) {
-    //     $reasons[] = $this->t('To uninstall OMDB API Entity Module, first delete all <em>Omdb API Entity</em> content');
-    //   }
-    // }.
-    if ($module != 'content_entity_builder') {
+
+    if ($module != 'omdb_api') {
       return [];
     }
 
@@ -57,21 +54,7 @@ class OmdbApiEntityUninstallValidator implements ModuleUninstallValidatorInterfa
       }
     }
     return $reasons;
-  }
 
-  /**
-   * Determines if there are any OMDB API Entity Content.
-   *
-   * @return bool
-   *   TRUE if there are OMDB API Entity Content, FALSE otherwise.
-   */
-  protected function hasOmdbApiEntityContent() {
-    $omdb_api_entities = $this->entityTypeManager->getStorage('omdb_api')->getQuery()
-      ->condition('type', 'asyncapi_doc')
-      ->accessCheck(FALSE)
-      ->range(0, 1)
-      ->execute();
-    return !empty($omdb_api_entities);
   }
 
 }
